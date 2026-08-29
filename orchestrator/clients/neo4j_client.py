@@ -191,4 +191,34 @@ class Neo4jClient:
             "edge_count": len(self._in_memory_edges)
         }
 
+    async def get_graph_stats(self) -> Dict[str, int]:
+        """Return total count of nodes and edges."""
+        export = await self.get_graph_export()
+        return {"nodes": export["node_count"], "edges": export["edge_count"]}
+
+    async def clear_all(self):
+        """Clear graph nodes and edges."""
+        self._in_memory_nodes.clear()
+        self._in_memory_edges.clear()
+        if self._connected and self._driver:
+            await self.run_query("MATCH (n) DETACH DELETE n")
+
+    async def add_node(self, node_id: str, node_type: str, properties: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+        """Convenience wrapper for merge_node."""
+        label = properties.get("name", node_id) if properties else node_id
+        return await self.merge_node(node_id=node_id, label=label, node_type=node_type, properties=properties)
+
+    async def add_edge(self, source_id: str, target_id: str, relationship: str, properties: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+        """Convenience wrapper for merge_relationship."""
+        return await self.merge_relationship(source_id=source_id, target_id=target_id, relationship=relationship, properties=properties)
+
+    async def init_schema(self):
+        """Initialize schema constraints if connected."""
+        if self._connected and self._driver:
+            for entity in ["Idea", "Competitor", "Feature", "Complaint", "PricingTier"]:
+                try:
+                    await self.run_query(f"CREATE CONSTRAINT IF NOT EXISTS FOR (n:{entity}) REQUIRE n.id IS UNIQUE")
+                except Exception:
+                    pass
+
 neo4j_client = Neo4jClient()

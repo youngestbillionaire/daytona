@@ -28,7 +28,7 @@ async def run_competitor_enrichment(
     emit("🔎 [COMPETITOR_ENRICHMENT] Initiating secondary deep scraping pass on top competitors...")
 
     enriched_list: List[EnrichedCompetitor] = []
-    top_competitors = recon_output.competitors[:3]
+    top_competitors = recon_output.competitors
 
     for comp in top_competitors:
         emit(f"🌐 [COMPETITOR_ENRICHMENT] Fetching marketing & pricing structure for {comp.name} ({comp.url})...")

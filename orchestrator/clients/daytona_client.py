@@ -13,10 +13,25 @@ class DaytonaSandbox:
     """Represents an active Daytona Workspace Sandbox or Local Simulation."""
     def __init__(self, sandbox_id: str, is_mock: bool = False, local_path: Optional[Path] = None):
         self.id = sandbox_id
+        self.sandbox_id = sandbox_id
         self.is_mock = is_mock
         self.local_path = local_path or (Path("artifacts") / "sandboxes" / sandbox_id)
+        self.workspace_path = str(self.local_path)
         self.preview_url = f"http://localhost:{settings.PORT}/api/preview/{sandbox_id}"
         self.is_running = False
+
+    async def exec_command(self, command: str) -> Dict[str, Any]:
+        """Alias for execute_command."""
+        res = await self.execute_command(command)
+        # Create lightweight wrapper object that supports both dict and attribute access
+        class ExecResult:
+            def __init__(self, code, out, err):
+                self.exit_code = code
+                self.stdout = out
+                self.stderr = err
+            def __getitem__(self, item):
+                return getattr(self, item)
+        return ExecResult(res["exit_code"], res["stdout"], res["stderr"])
 
     async def write_file(self, relative_path: str, content: str):
         """Write a file into the sandbox workspace."""
