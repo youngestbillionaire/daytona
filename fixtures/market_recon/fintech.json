@@ -1,0 +1,43 @@
+{
+  "category": "fintech",
+  "keywords": ["ai accounting for freelancers", "automated invoicing tax prep", "micro business bookkeeping", "freelance expense tracking"],
+  "competitors": [
+    {
+      "name": "QuickBooks Self-Employed",
+      "url": "https://quickbooks.intuit.com/self-employed",
+      "description": "Cloud accounting software designed specifically for freelancers and gig workers.",
+      "complaints": [
+        "Customer support is unresponsive and prices increase arbitrarily every year",
+        "Mileage tracking is buggy and drains smartphone battery rapidly",
+        "Doesn't understand modern multi-currency crypto or international invoice flows"
+      ],
+      "source_queries": ["quickbooks complaints reddit", "freelance bookkeeping tools"]
+    },
+    {
+      "name": "FreshBooks",
+      "url": "https://freshbooks.com",
+      "description": "Invoice and accounting software for small businesses and independent contractors.",
+      "complaints": [
+        "Charges per active client which punishes agencies with one-off clients",
+        "Lacks automated AI receipt reconciliation and smart tax write-off suggestions"
+      ],
+      "source_queries": ["freshbooks alternatives", "invoicing software review complaints"]
+    },
+    {
+      "name": "Wave Accounting",
+      "url": "https://waveapps.com",
+      "description": "Free invoicing and accounting with paid payroll and payment processing.",
+      "complaints": [
+        "Eliminated free bank transaction sync, locking it behind paid tiers",
+        "Zero AI assistance for category matching or tax deductions"
+      ],
+      "source_queries": ["wave accounting complaints", "free bookkeeping app"]
+    }
+  ],
+  "raw_complaint_pool": [
+    "I spent 14 hours over the weekend matching receipts to invoices for tax season.",
+    "Accounting apps charge $40/month just to send 3 PDF invoices to clients.",
+    "Categorizing transactions manually in 2026 feels archaic when LLMs exist.",
+    "Why can't an AI look at my bank feed and draft my schedule C deductions automatically?"
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "category": "devtools",
+  "keywords": ["ai database migration linter", "safe schema migration tool", "zero downtime postgres migrations", "sql schema diff"],
+  "competitors": [
+    {
+      "name": "Prisma Migrate",
+      "url": "https://prisma.io",
+      "description": "Declarative database schema migration tool for Node.js and TypeScript.",
+      "complaints": [
+        "Dangerous table lock migrations executed without warning on production databases",
+        "Difficult to write custom raw SQL migrations alongside declarative schemas",
+        "Shadow database requirements make CI/CD pipelines slow and fragile"
+      ],
+      "source_queries": ["prisma migrate issues production", "schema migration tools"]
+    },
+    {
+      "name": "Flyway",
+      "url": "https://flywaydb.org",
+      "description": "Database migration tool strongly favoring plain SQL and version control.",
+      "complaints": [
+        "Advanced rollback and automated drift detection locked behind enterprise licensing",
+        "Does not analyze query locks or table size risks before applying changes"
+      ],
+      "source_queries": ["flyway review complaints", "database schema tools"]
+    }
+  ],
+  "raw_complaint_pool": [
+    "Our junior dev ran an `ALTER TABLE ADD COLUMN NOT NULL` and locked our 50GB table for 2 hours.",
+    "Database migration tools don't warn you if a migration will lock rows under heavy production traffic.",
+    "Need automated CI checks that simulate index creation on live table replicas."
+  ]
+}

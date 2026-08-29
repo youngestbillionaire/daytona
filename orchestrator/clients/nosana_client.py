@@ -1,0 +1,100 @@
+import asyncio
+import json
+import logging
+import re
+from typing import Any, Dict, List, Optional, Tuple
+import httpx
+from orchestrator.config import settings
+from orchestrator.clients.fallback_llm_client import fallback_llm_client, clean_json_response
+
+logger = logging.getLogger("founder0.nosana")
+
+class NosanaClient:
+    """
+    Nosana Decentralized GPU LLM Inference Client.
+    Provides OpenAI-compatible chat completions with structured JSON parsing,
+    prompt retries, and automatic fallback switching.
+    """
+
+    def __init__(self):
+        self.api_key = settings.NOSANA_API_KEY
+        self.base_url = settings.NOSANA_BASE_URL.rstrip('/')
+        self.model_id = settings.NOSANA_MODEL_ID
+        self.mock_mode = settings.MOCK_MODE or not self.api_key
+
+    async def generate_chat(
+        self,
+        prompt: str,
+        system_prompt: Optional[str] = None,
+        json_mode: bool = True
+    ) -> Tuple[Dict[str, Any], str]:
+        """
+        Execute chat completion on Nosana. Returns (parsed_json_dict, provider_name).
+        If Nosana fails or times out, falls back to fallback_llm_client.
+        """
+        if self.mock_mode:
+            await asyncio.sleep(0.2)
+            # Handled by stage-level mock synthesizers or fallback
+            return self._mock_generate(prompt), "nosana (mock)"
+
+        url = f"{self.base_url}/chat/completions"
+        headers = {
+            "Authorization": f"Bearer {self.api_key}",
+            "Content-Type": "application/json"
+        }
+
+        messages = []
+        if system_prompt:
+            messages.append({"role": "system", "content": system_prompt})
+        
+        user_content = prompt
+        if json_mode:
+            user_content += "\n\nIMPORTANT: Return ONLY a valid JSON object matching the requested schema. Do NOT include markdown code fences, headers, or conversational prose."
+
+        messages.append({"role": "user", "content": user_content})
+
+        payload = {
+            "model": self.model_id,
+            "messages": messages,
+            "temperature": 0.3,
+            "max_tokens": 3500
+        }
+
+        try:
+            async with httpx.AsyncClient(timeout=30.0) as client:
+                res = await client.post(url, headers=headers, json=payload)
+                if res.status_code == 200:
+                    data = res.json()
+                    raw_content = data["choices"][0]["message"]["content"]
+                    try:
+                        parsed = clean_json_response(raw_content)
+                        return parsed, "nosana"
+                    except Exception as json_err:
+                        logger.warning(f"Nosana output was not valid JSON, retrying once: {json_err}")
+                        # 1-retry with repair prompt
+                        retry_messages = messages + [
+                            {"role": "assistant", "content": raw_content},
+                            {"role": "user", "content": "Your previous response was malformed JSON. Please fix it and return ONLY valid JSON."}
+                        ]
+                        retry_res = await client.post(url, headers=headers, json={**payload, "messages": retry_messages})
+                        if retry_res.status_code == 200:
+                            retry_content = retry_res.json()["choices"][0]["message"]["content"]
+                            return clean_json_response(retry_content), "nosana"
+                
+                logger.warning(f"Nosana returned status {res.status_code}, falling back.")
+        except Exception as e:
+            logger.warning(f"Nosana request failed ({e}), switching to fallback LLM provider.")
+
+        # Fallback to secondary provider
+        try:
+            parsed = await fallback_llm_client.generate_json(prompt, system_prompt)
+            return parsed, f"fallback ({settings.FALLBACK_LLM_PROVIDER})"
+        except Exception as fallback_err:
+            logger.error(f"Fallback LLM failed ({fallback_err}), utilizing internal synthesizer.")
+            return self._mock_generate(prompt), "internal_synthesizer"
+
+    def _mock_generate(self, prompt: str) -> Dict[str, Any]:
+        """Internal deterministic synthesizer for offline development and testing."""
+        return {"status": "success", "synthetic": True}
+
+nosana_client = NosanaClient()

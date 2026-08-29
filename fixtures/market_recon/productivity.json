@@ -1,0 +1,45 @@
+{
+  "category": "productivity",
+  "keywords": ["bill split", "roommate expense tracker", "shared house chores", "splitwise alternative", "roommate debt"],
+  "competitors": [
+    {
+      "name": "Splitwise",
+      "url": "https://splitwise.com",
+      "description": "Keep track of your shared expenses and balances with housemates, trips, and friends.",
+      "complaints": [
+        "Recent updates introduced intrusive 10-second paywall timers on simple expense adds",
+        "Passive aggressive reminders feel uncomfortable when you dislike your roommate",
+        "Does not enforce payments or integrate automated escrow for uncooperative roommates",
+        "No automatic dispute mediation when someone claims they never used the groceries"
+      ],
+      "source_queries": ["roommate expense app", "splitwise alternatives reddit"]
+    },
+    {
+      "name": "Tricount",
+      "url": "https://tricount.com",
+      "description": "Share group expenses easily on trips, events, or shared flats.",
+      "complaints": [
+        "Too basic, lacks receipt OCR and automated bank transaction sync",
+        "Relies on the honor system with zero automated settlement or accountability"
+      ],
+      "source_queries": ["split expenses app", "tricount review complaints"]
+    },
+    {
+      "name": "Settle Up",
+      "url": "https://settleup.io",
+      "description": "Track group expenses for roommates and trips with multiple currencies.",
+      "complaints": [
+        "UI is clunky and outdated, sync errors frequently duplicate payments",
+        "No chore tracking linked to expense deductions"
+      ],
+      "source_queries": ["roommate debt tracker", "settle up reviews"]
+    }
+  ],
+  "raw_complaint_pool": [
+    "I hate having to text my deadbeat roommate 15 times to pay $12 for toilet paper.",
+    "People make up excuses like 'I didn't eat those eggs' after agreeing to split groceries.",
+    "Venmo requests get ignored until rent day turns into a screaming match.",
+    "There needs to be an app that locks WiFi access or auto-deducts until bills are settled.",
+    "Splitwise made their app unusable with full-screen ads unless you pay a monthly sub."
+  ]
+}

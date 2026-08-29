@@ -1,0 +1,32 @@
+{
+  "category": "health",
+  "keywords": ["personalized sleep optimizer", "circadian rhythm tracker", "caffeine cutoff calculator", "sleep habit coach"],
+  "competitors": [
+    {
+      "name": "Whoop",
+      "url": "https://whoop.com",
+      "description": "Wearable fitness and health tracker offering 24/7 recovery and sleep insights.",
+      "complaints": [
+        "Expensive lifetime subscription lock-in with proprietary hardware",
+        "Gives scores but offers few actionable step-by-step habit adjustments",
+        "Sensors fail to distinguish between lying awake and light sleep"
+      ],
+      "source_queries": ["whoop complaints reddit", "sleep tracker app"]
+    },
+    {
+      "name": "Sleep Cycle",
+      "url": "https://sleepcycle.com",
+      "description": "Smart alarm clock and sleep tracker analyzing sleep patterns via sound.",
+      "complaints": [
+        "Relies heavily on microphone audio which is unreliable with white noise machines",
+        "Paywalls historical trends and caffeine impact analytics"
+      ],
+      "source_queries": ["sleep cycle alternatives", "smart alarm complaints"]
+    }
+  ],
+  "raw_complaint_pool": [
+    "I know my sleep score was 62%, but tell me exactly what time I should have stopped drinking tea.",
+    "Hardware trackers are too expensive for simple actionable bedtime routine advice.",
+    "Tired of generic 'go to bed earlier' advice that doesn't adapt to my shifting shift-work schedule."
+  ]
+}

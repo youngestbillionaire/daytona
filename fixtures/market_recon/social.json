@@ -1,0 +1,32 @@
+{
+  "category": "social",
+  "keywords": ["hobby group organizer", "local interest meetup", "niche community finder", "anti-doomscroll social"],
+  "competitors": [
+    {
+      "name": "Meetup.com",
+      "url": "https://meetup.com",
+      "description": "Platform for finding and building local communities around shared interests.",
+      "complaints": [
+        "Expensive organizer fees ($30+/mo) drive community leaders away",
+        "Search algorithm pushes paid sponsored events over organic grassroots clubs",
+        "High ghosting/no-show rate on RSVP'd events"
+      ],
+      "source_queries": ["meetup alternatives reddit", "local clubs app"]
+    },
+    {
+      "name": "Discord",
+      "url": "https://discord.com",
+      "description": "Voice, video, and text communication service used by millions of groups.",
+      "complaints": [
+        "Overwhelming notifications and unorganized chat channels",
+        "Not optimized for in-person real-world event coordination and attendance commitments"
+      ],
+      "source_queries": ["discord for local meetups", "event coordination tools"]
+    }
+  ],
+  "raw_complaint_pool": [
+    "I just want to find 3 people to play board games with nearby without paying a $30 monthly subscription.",
+    "People RSVP to events and then 80% ghost without penalty.",
+    "Finding genuine in-person friends after college feels impossible on existing ad-filled feeds."
+  ]
+}
