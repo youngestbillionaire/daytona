@@ -1,6 +1,7 @@
 {
   "category": "social",
-  "keywords": ["hobby group organizer", "local interest meetup", "niche community finder", "anti-doomscroll social"],
+  "keywords": ["hobby group organizer", "local interest meetup", "niche community finder", "anti-doomscroll social", "real-world connection app", "micro-community builder"],
+  "market_size": "$8.1B community and events platform market",
   "competitors": [
     {
       "name": "Meetup.com",
@@ -9,7 +10,8 @@
       "complaints": [
         "Expensive organizer fees ($30+/mo) drive community leaders away",
         "Search algorithm pushes paid sponsored events over organic grassroots clubs",
-        "High ghosting/no-show rate on RSVP'd events"
+        "High ghosting/no-show rate on RSVP'd events with zero accountability",
+        "Interface is cluttered with promoted content, killing the organic discovery vibe"
       ],
       "source_queries": ["meetup alternatives reddit", "local clubs app"]
     },
@@ -19,14 +21,42 @@
       "description": "Voice, video, and text communication service used by millions of groups.",
       "complaints": [
         "Overwhelming notifications and unorganized chat channels",
-        "Not optimized for in-person real-world event coordination and attendance commitments"
+        "Not optimized for in-person real-world event coordination and attendance commitments",
+        "Moderation tools are crude and communities devolve into toxicity quickly"
       ],
       "source_queries": ["discord for local meetups", "event coordination tools"]
+    },
+    {
+      "name": "Eventbrite",
+      "url": "https://eventbrite.com",
+      "description": "Ticketing and event management platform for organizers of all sizes.",
+      "complaints": [
+        "Takes massive platform fees on top of payment processing fees",
+        "Designed for large commercial events, not casual 5-person hobby hangouts",
+        "No social features — you attend an event and never connect with attendees again"
+      ],
+      "source_queries": ["eventbrite alternatives small events", "event app for friends"]
+    },
+    {
+      "name": "Bumble BFF",
+      "url": "https://bumble.com/bff",
+      "description": "Friend-finding mode within the Bumble dating app ecosystem.",
+      "complaints": [
+        "Swipe fatigue — treating friendship like dating feels shallow and transactional",
+        "No shared activity or interest matching, just photos and bios",
+        "People match and then never actually meet in person — zero follow-through mechanics"
+      ],
+      "source_queries": ["bumble bff complaints", "friend finding apps review"]
     }
   ],
   "raw_complaint_pool": [
     "I just want to find 3 people to play board games with nearby without paying a $30 monthly subscription.",
     "People RSVP to events and then 80% ghost without penalty.",
-    "Finding genuine in-person friends after college feels impossible on existing ad-filled feeds."
+    "Finding genuine in-person friends after college feels impossible on existing ad-filled feeds.",
+    "Every 'social' app is actually designed to keep you scrolling, not to get you out of the house.",
+    "I moved to a new city and it took 8 months to find a single friend group. Apps made it harder, not easier.",
+    "Meetup charges organizers $200/year to run a free hiking group that benefits the community. It's predatory.",
+    "I've been on Bumble BFF for a year. Matched with 40 people. Met exactly zero in person.",
+    "The loneliness epidemic is real and tech companies are profiting from it instead of solving it."
   ]
 }

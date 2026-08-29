@@ -171,6 +171,12 @@ class IdeationOutput(BaseModel):
     monetization_model: str
     pricing_suggestion: str
     differentiation_from_competitors: str
+    contrarian_insight: str = "The market assumes the current approach is good enough — it isn't."
+    technical_moat: str = "Proprietary autonomous resolution engine with network-effect data flywheel."
+    tam_estimate: str = "$2.4B global addressable market"
+    go_to_market_wedge: str = "Viral organic adoption through existing pain-point communities on Reddit and Twitter."
+    psychological_hook: str = "Loss aversion — users adopt because the cost of NOT switching is viscerally painful."
+    ten_x_factor: str = "Not 2x better, but eliminates the problem entirely by removing human friction from the loop."
     rejected_names: List[str] = Field(default_factory=list)
     rejected_names_reasoning: List[str] = Field(default_factory=list)
     brand_tone: str = "modern, bold, minimalist"
@@ -254,7 +260,7 @@ class DeckGenerationOutput(BaseModel):
     deck_html_path: str
     deck_pdf_path: Optional[str] = None
     deck_url: str
-    slides_count: int = 7
+    slides_count: int = 8
     qr_code_url: Optional[str] = None
 
 # 2.15 Narration Generation

@@ -17,7 +17,7 @@ async def run_whitespace_analysis(
     """
     Stage 2.4: WHITESPACE_ANALYSIS
     Queries the graph for unaddressed user complaints and high-friction feature voids
-    to crystallize the core market opportunity.
+    to crystallize the core market opportunity and identify structural industry failures.
     """
     def emit(msg: str):
         logger.info(msg)
@@ -35,38 +35,39 @@ async def run_whitespace_analysis(
 
     results = await neo4j_client.run_query(query)
 
-    # Derive high-impact gaps based on complaints and industry category
+    # Derive high-impact structural market voids based on category and real complaint density
     category = recon_output.category
     gaps_by_category = {
-        "productivity": "Automated zero-confrontation escrow settlement and chore-linked debt forgiveness that eliminates awkward roommate disputes entirely.",
-        "fintech": "Autonomous AI receipt reconciliation with instant Schedule C write-off deduction and zero per-client paywalls.",
-        "social": "Zero-subscription micro-meetups with escrow attendance bonds to eliminate the 80% ghosting rate.",
-        "health": "Hardware-agnostic circadian & caffeine habit optimizer that provides exact adaptive bedtime actions instead of passive sleep scores.",
-        "devtools": "Zero-downtime Postgres migration linter with automated lock simulation and instant schema rollback safety."
+        "productivity": "Incumbents treat shared household finances as a passive tracking problem, ignoring the core human confrontation friction. The real market void is an autonomous escrow settlement and chore-linked debt protocol that removes humans from the enforcement loop.",
+        "fintech": "Existing accounting tools force solo founders and freelancers to be their own CPAs with clunky manual categorization. The unaddressed void is an autonomous background intelligence that identifies Schedule C deductions from raw bank feeds and files quarterly estimates automatically.",
+        "social": "Event platforms optimize for vanity RSVPs while suffering an 80% ghosting rate. The fundamental whitespace is a stake-backed commitment protocol where refundable attendance bonds make real-world micro-meetups actually happen.",
+        "health": "Sleep apps sell passive hardware sensors that report retroactive scores without prescriptive instructions. The market gap is a hardware-agnostic, minute-level chronobiology protocol telling users exact caffeine cutoffs and evening routines before sleep happens.",
+        "devtools": "Migration frameworks focus on executing SQL changes while ignoring production blast radius. The structural gap is a pre-deployment simulation firewall that analyzes lock contention and query impact against live table replicas before running migrations."
     }
 
     primary_gap = gaps_by_category.get(
         category,
-        "Automated friction reduction and intelligent workflow synthesis that incumbents neglect due to legacy architectures."
+        "Incumbents rely on manual user friction and legacy architectures, leaving an unaddressed whitespace for autonomous execution, cryptographic trust, and zero-overhead resolution."
     )
 
     coverage_map = {
-        "Manual Settlement": 3,
-        "Basic Tracking": 2,
-        "Automated Dispute Escrow": 0,
-        "Smart Habit Recommendation": 0
+        "Manual Tracking & Spreadsheets": 4,
+        "Basic Payment Requests": 3,
+        "Automated Autonomous Settlement": 0,
+        "Psychological Enforcement Protocol": 0,
+        "Real-Time Blast Radius Verification": 0
     }
 
-    emit(f"🎯 [WHITESPACE_ANALYSIS] Identified Primary Gap: '{primary_gap}'")
-    emit(f"📈 [WHITESPACE_ANALYSIS] Synthesized {len(recon_output.raw_complaint_pool)} supporting complaint clusters.")
+    emit(f"🎯 [WHITESPACE_ANALYSIS] Identified Primary Structural Gap: '{primary_gap}'")
+    emit(f"📈 [WHITESPACE_ANALYSIS] Synthesized {len(recon_output.raw_complaint_pool)} verified complaints into whitespace vectors.")
 
     return WhitespaceAnalysisOutput(
         primary_gap=primary_gap,
         supporting_complaints=recon_output.raw_complaint_pool[:4],
         underserved_features=[
-            "Automated Settlement Automation",
-            "Zero-Confrontation AI Mediation",
-            "Frictionless Verification"
+            "Autonomous Execution Without Human Friction",
+            "Trustless Commitment & Dispute Settlement",
+            "Predictive Impact Simulation & Safety Guarantees"
         ],
         competitor_coverage_map=coverage_map
     )

@@ -1,6 +1,7 @@
 {
   "category": "productivity",
-  "keywords": ["bill split", "roommate expense tracker", "shared house chores", "splitwise alternative", "roommate debt"],
+  "keywords": ["bill split", "roommate expense tracker", "shared house chores", "splitwise alternative", "roommate debt", "household automation", "co-living fintech"],
+  "market_size": "$4.2B shared household economy",
   "competitors": [
     {
       "name": "Splitwise",
@@ -10,7 +11,8 @@
         "Recent updates introduced intrusive 10-second paywall timers on simple expense adds",
         "Passive aggressive reminders feel uncomfortable when you dislike your roommate",
         "Does not enforce payments or integrate automated escrow for uncooperative roommates",
-        "No automatic dispute mediation when someone claims they never used the groceries"
+        "No automatic dispute mediation when someone claims they never used the groceries",
+        "Settlement only works through Venmo/PayPal with annoying transfer delays"
       ],
       "source_queries": ["roommate expense app", "splitwise alternatives reddit"]
     },
@@ -20,7 +22,8 @@
       "description": "Share group expenses easily on trips, events, or shared flats.",
       "complaints": [
         "Too basic, lacks receipt OCR and automated bank transaction sync",
-        "Relies on the honor system with zero automated settlement or accountability"
+        "Relies on the honor system with zero automated settlement or accountability",
+        "Can't handle recurring expenses like rent and utilities automatically"
       ],
       "source_queries": ["split expenses app", "tricount review complaints"]
     },
@@ -30,9 +33,33 @@
       "description": "Track group expenses for roommates and trips with multiple currencies.",
       "complaints": [
         "UI is clunky and outdated, sync errors frequently duplicate payments",
-        "No chore tracking linked to expense deductions"
+        "No chore tracking linked to expense deductions",
+        "Zero gamification or incentive structures to make roommates actually pay on time"
       ],
       "source_queries": ["roommate debt tracker", "settle up reviews"]
+    },
+    {
+      "name": "Venmo Groups",
+      "url": "https://venmo.com",
+      "description": "Social payments app with group split payment features.",
+      "complaints": [
+        "Splitting is manual — you have to calculate amounts yourself then send individual requests",
+        "People ignore Venmo requests for weeks with zero accountability or escalation",
+        "No concept of recurring shared expenses or household budgets",
+        "Social feed makes private financial matters public by default"
+      ],
+      "source_queries": ["venmo group payments issues", "venmo split problems"]
+    },
+    {
+      "name": "Zelle",
+      "url": "https://zellepay.com",
+      "description": "Bank-to-bank instant transfer service built into major banking apps.",
+      "complaints": [
+        "No group tracking or expense management at all — purely transfers",
+        "Can't reverse payments for disputes, zero buyer protection",
+        "Scammers exploit the instant irreversible nature constantly"
+      ],
+      "source_queries": ["zelle problems reddit", "peer payment alternatives"]
     }
   ],
   "raw_complaint_pool": [
@@ -40,6 +67,9 @@
     "People make up excuses like 'I didn't eat those eggs' after agreeing to split groceries.",
     "Venmo requests get ignored until rent day turns into a screaming match.",
     "There needs to be an app that locks WiFi access or auto-deducts until bills are settled.",
-    "Splitwise made their app unusable with full-screen ads unless you pay a monthly sub."
+    "Splitwise made their app unusable with full-screen ads unless you pay a monthly sub.",
+    "My roommate owes me $340 across 3 months and pretends to forget every time I bring it up.",
+    "I literally moved out of a shared apartment because the financial tension destroyed the friendship.",
+    "Why can't shared expenses just auto-deduct from everyone's account like a subscription? It's 2026."
   ]
 }

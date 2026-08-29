@@ -1,15 +1,17 @@
 {
   "category": "health",
-  "keywords": ["personalized sleep optimizer", "circadian rhythm tracker", "caffeine cutoff calculator", "sleep habit coach"],
+  "keywords": ["personalized sleep optimizer", "circadian rhythm tracker", "caffeine cutoff calculator", "sleep habit coach", "chronobiology app", "adaptive sleep protocol"],
+  "market_size": "$6.3B sleep technology and wellness market",
   "competitors": [
     {
       "name": "Whoop",
       "url": "https://whoop.com",
       "description": "Wearable fitness and health tracker offering 24/7 recovery and sleep insights.",
       "complaints": [
-        "Expensive lifetime subscription lock-in with proprietary hardware",
+        "Expensive lifetime subscription lock-in with proprietary hardware ($30/mo forever)",
         "Gives scores but offers few actionable step-by-step habit adjustments",
-        "Sensors fail to distinguish between lying awake and light sleep"
+        "Sensors fail to distinguish between lying awake and light sleep",
+        "Recovery recommendations are generic ('rest more') instead of specific ('skip the 2pm espresso')"
       ],
       "source_queries": ["whoop complaints reddit", "sleep tracker app"]
     },
@@ -19,14 +21,43 @@
       "description": "Smart alarm clock and sleep tracker analyzing sleep patterns via sound.",
       "complaints": [
         "Relies heavily on microphone audio which is unreliable with white noise machines",
-        "Paywalls historical trends and caffeine impact analytics"
+        "Paywalls historical trends and caffeine impact analytics",
+        "Smart alarm window is too narrow and still wakes you up groggy"
       ],
       "source_queries": ["sleep cycle alternatives", "smart alarm complaints"]
+    },
+    {
+      "name": "Oura Ring",
+      "url": "https://ouraring.com",
+      "description": "Smart ring that tracks sleep, activity, and readiness with medical-grade sensors.",
+      "complaints": [
+        "$300 hardware + $6/mo subscription makes this inaccessible for most people",
+        "Ring sizing is guesswork — many users buy the wrong size and can't return",
+        "Readiness score changes but never explains what specific behavior caused the change",
+        "Doesn't integrate caffeine timing, blue light exposure, or meal timing into recommendations"
+      ],
+      "source_queries": ["oura ring complaints", "sleep ring tracker review"]
+    },
+    {
+      "name": "Rise Science",
+      "url": "https://risescience.com",
+      "description": "App that tracks sleep debt and circadian rhythm to optimize daily energy.",
+      "complaints": [
+        "Costs $70/year for what amounts to a bedtime reminder with extra steps",
+        "Sleep debt calculation feels arbitrary and doesn't account for individual genetics",
+        "Constantly nags about sleep debt with anxiety-inducing notifications"
+      ],
+      "source_queries": ["rise sleep app review", "circadian rhythm apps"]
     }
   ],
   "raw_complaint_pool": [
     "I know my sleep score was 62%, but tell me exactly what time I should have stopped drinking tea.",
     "Hardware trackers are too expensive for simple actionable bedtime routine advice.",
-    "Tired of generic 'go to bed earlier' advice that doesn't adapt to my shifting shift-work schedule."
+    "Tired of generic 'go to bed earlier' advice that doesn't adapt to my shifting shift-work schedule.",
+    "My Oura ring tells me I slept badly but never explains WHY or what to change tomorrow.",
+    "I spent $350 on a Whoop and all it tells me is what I already know — I'm tired.",
+    "Why can't an app just say 'your last coffee should be at 1:47 PM based on your sleep data' instead of vague guidelines?",
+    "I work rotating 12-hour shifts. Every sleep app assumes a normal 9-5 schedule and their advice is useless for me.",
+    "Sleep trackers are the new step counters — they measure without improving anything."
   ]
 }

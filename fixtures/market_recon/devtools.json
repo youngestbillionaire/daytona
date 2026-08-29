@@ -1,6 +1,7 @@
 {
   "category": "devtools",
-  "keywords": ["ai database migration linter", "safe schema migration tool", "zero downtime postgres migrations", "sql schema diff"],
+  "keywords": ["ai database migration linter", "safe schema migration tool", "zero downtime postgres migrations", "sql schema diff", "database CI safety", "migration risk analyzer"],
+  "market_size": "$3.7B database management tools market",
   "competitors": [
     {
       "name": "Prisma Migrate",
@@ -9,7 +10,8 @@
       "complaints": [
         "Dangerous table lock migrations executed without warning on production databases",
         "Difficult to write custom raw SQL migrations alongside declarative schemas",
-        "Shadow database requirements make CI/CD pipelines slow and fragile"
+        "Shadow database requirements make CI/CD pipelines slow and fragile",
+        "Forces an ORM-first approach that doesn't work for complex queries"
       ],
       "source_queries": ["prisma migrate issues production", "schema migration tools"]
     },
@@ -19,14 +21,42 @@
       "description": "Database migration tool strongly favoring plain SQL and version control.",
       "complaints": [
         "Advanced rollback and automated drift detection locked behind enterprise licensing",
-        "Does not analyze query locks or table size risks before applying changes"
+        "Does not analyze query locks or table size risks before applying changes",
+        "Configuration is XML-heavy and feels stuck in the Java enterprise era"
       ],
       "source_queries": ["flyway review complaints", "database schema tools"]
+    },
+    {
+      "name": "Liquibase",
+      "url": "https://liquibase.org",
+      "description": "Database schema change management and deployment automation.",
+      "complaints": [
+        "Changelog XML/YAML format is verbose and error-prone for simple changes",
+        "Pro features (policy checks, drift detection) are $$$$ enterprise-only",
+        "Community edition lacks any safety analysis for production deployments"
+      ],
+      "source_queries": ["liquibase complaints", "database migration alternatives"]
+    },
+    {
+      "name": "Atlas (Ariga)",
+      "url": "https://atlasgo.io",
+      "description": "Modern database schema management tool with declarative migrations.",
+      "complaints": [
+        "Still early-stage with incomplete documentation and sparse community support",
+        "Declarative approach struggles with data migrations, not just schema changes",
+        "HCL configuration language has a steep learning curve for most backend devs"
+      ],
+      "source_queries": ["atlas database tool review", "ariga atlas migration"]
     }
   ],
   "raw_complaint_pool": [
     "Our junior dev ran an `ALTER TABLE ADD COLUMN NOT NULL` and locked our 50GB table for 2 hours.",
     "Database migration tools don't warn you if a migration will lock rows under heavy production traffic.",
-    "Need automated CI checks that simulate index creation on live table replicas."
+    "Need automated CI checks that simulate index creation on live table replicas.",
+    "We had a 4-hour production outage because a migration dropped a column that a running service still referenced.",
+    "Every migration tool assumes you can take downtime. In 2026, zero-downtime should be the default, not a paid feature.",
+    "I wish there was a tool that could tell me 'this ALTER will lock writes for ~45 minutes on your 200M row table' BEFORE I run it.",
+    "Our team spent 3 days debugging a migration that silently converted timestamps to dates and truncated all time data.",
+    "The cost of a single bad migration in production ($50K+ in lost revenue) far exceeds what any migration tool costs. Yet none of them focus on safety."
   ]
 }

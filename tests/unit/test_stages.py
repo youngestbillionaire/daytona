@@ -58,6 +58,10 @@ async def test_stage_ideation_and_spec():
     ideation = await run_ideation(idea, whitespace)
     assert ideation.product_name != ""
     assert len(ideation.core_features) == 3
+    assert len(ideation.contrarian_insight) > 10
+    assert len(ideation.technical_moat) > 10
+    assert len(ideation.tam_estimate) > 0
+    assert len(ideation.ten_x_factor) > 10
 
     branding = await run_naming_branding(ideation)
     assert branding.product_name == ideation.product_name
@@ -98,7 +102,7 @@ async def test_stage_mvp_pipeline():
     assert screenshot.screenshot_path != ""
 
     deck = await run_deck_generation("test_run_123", ideation, recon, whitespace, graph, deploy, screenshot)
-    assert deck.slides_count == 7
+    assert deck.slides_count == 8
     assert deck.deck_url.startswith("/api/artifacts/decks")
 
     narration = await run_narration_generation("test_run_123", ideation, deck)
