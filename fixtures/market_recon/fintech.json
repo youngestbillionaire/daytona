@@ -1,7 +1,17 @@
 {
   "category": "fintech",
   "keywords": ["ai accounting for freelancers", "automated invoicing tax prep", "micro business bookkeeping", "freelance expense tracking", "autonomous tax deduction", "receipt scanning AI"],
+  "keyword_variations": [
+    ["freelancer tax automation", "self-employed bookkeeping AI", "schedule C deduction finder", "quarterly tax estimator"],
+    ["receipt OCR categorization", "bank feed auto-categorize", "small business accounting bot", "1099 tax assistant"],
+    ["autonomous invoice generator", "freelance cash flow predictor", "tax write-off detector", "zero-touch bookkeeping"]
+  ],
   "market_size": "$12.8B freelance financial tools market",
+  "market_size_range": {
+    "min_billions": 11.2,
+    "max_billions": 14.5,
+    "label_template": "${value}B freelance financial tools market"
+  },
   "competitors": [
     {
       "name": "QuickBooks Self-Employed",
@@ -61,6 +71,41 @@
       "source_queries": ["keeper tax app review", "ai tax deduction finder"]
     }
   ],
+  "competitor_variants": [
+    {
+      "name": "Hurdlr",
+      "url": "https://hurdlr.com",
+      "description": "Real-time freelance finance tracking with automatic mileage and expense logging.",
+      "complaints": [
+        "Acquired by Novo and feature development has stalled completely",
+        "Bank sync breaks frequently and requires manual re-authentication weekly",
+        "Tax estimates are rough guesses, not precise IRS-compliant calculations"
+      ],
+      "source_queries": ["hurdlr app review", "freelance mileage tracker"]
+    },
+    {
+      "name": "Bonsai",
+      "url": "https://hellobonsai.com",
+      "description": "All-in-one freelance suite: contracts, proposals, invoicing, and accounting.",
+      "complaints": [
+        "Tries to do everything and does nothing exceptionally well",
+        "Accounting module is an afterthought — no real tax intelligence",
+        "Expensive for what you get compared to specialized tools"
+      ],
+      "source_queries": ["bonsai freelance review", "all-in-one freelance tool"]
+    },
+    {
+      "name": "Copilot (Pilot.com)",
+      "url": "https://pilot.com",
+      "description": "CFO and bookkeeping service backed by Sequoia for startups and SMBs.",
+      "complaints": [
+        "Minimum $500/mo pricing excludes solo freelancers entirely",
+        "Slow turnaround on financial reports — weeks instead of real-time",
+        "Still relies heavily on human bookkeepers rather than AI automation"
+      ],
+      "source_queries": ["pilot.com review", "startup bookkeeping service"]
+    }
+  ],
   "raw_complaint_pool": [
     "I spent 14 hours over the weekend matching receipts to invoices for tax season.",
     "Accounting apps charge $40/month just to send 3 PDF invoices to clients.",
@@ -71,5 +116,25 @@
     "I pay $360/year for QuickBooks and I still have to hire a CPA for $800 to file. What exactly am I paying for?",
     "My accountant told me I missed $11,000 in legitimate home office deductions last year. An AI should have caught that.",
     "The fact that I have to photograph receipts, upload them, then MANUALLY match them to transactions is insane in the age of AI."
+  ],
+  "complaint_pool_extended": [
+    "I switched from W-2 to freelance and suddenly I'm spending 10% of my working hours on bookkeeping instead of billable work.",
+    "Quarterly estimated taxes are a guessing game. I either overpay by thousands or get hit with underpayment penalties.",
+    "My bank feed has 400 transactions a month. Categorizing each one manually is my personal version of hell.",
+    "I found out AFTER filing that I could have deducted my internet, phone, and even a percentage of my rent. $6,200 gone.",
+    "Every accounting app assumes I understand double-entry bookkeeping. I'm a designer, not an accountant.",
+    "I fired my CPA after they missed a $3,100 deduction for professional development courses I took last year.",
+    "The worst part about freelancing isn't finding clients — it's the constant background anxiety about whether I'm doing taxes right.",
+    "I keep a shoebox of receipts because I don't trust any app to reliably OCR and categorize them correctly.",
+    "Why do I need three separate tools (invoicing + bookkeeping + tax filing) when an AI could handle all three from my bank feed?",
+    "I literally cried during tax season last year. Not because I owed money, but because the process was so overwhelming.",
+    "My freelancer friends in Germany have automatic tax withholding. In the US, we're expected to be our own IRS agents.",
+    "I pay Bench $350/month and they still email me asking to clarify transactions I already explained three times."
+  ],
+  "trend_signals": [
+    "IRS announced AI-assisted audit expansion for 2026, increasing freelancer audit rates by 40%",
+    "Plaid and MX now offer real-time transaction categorization APIs with 94% baseline accuracy",
+    "67M Americans now freelance (up from 59M in 2023), creating massive underserved demand",
+    "Open banking regulations in 2026 enable direct bank feed access without screen scraping"
   ]
 }

@@ -1,7 +1,17 @@
 {
   "category": "health",
   "keywords": ["personalized sleep optimizer", "circadian rhythm tracker", "caffeine cutoff calculator", "sleep habit coach", "chronobiology app", "adaptive sleep protocol"],
+  "keyword_variations": [
+    ["caffeine metabolism calculator", "sleep prescription engine", "circadian protocol generator", "personalized bedtime routine"],
+    ["shift work sleep optimizer", "chronotype analyzer", "sleep debt calculator", "melatonin timing tool"],
+    ["hardware-free sleep coach", "behavioral sleep therapy", "wind-down protocol app", "sleep hygiene automation"]
+  ],
   "market_size": "$6.3B sleep technology and wellness market",
+  "market_size_range": {
+    "min_billions": 5.7,
+    "max_billions": 7.2,
+    "label_template": "${value}B sleep technology and wellness market"
+  },
   "competitors": [
     {
       "name": "Whoop",
@@ -50,6 +60,41 @@
       "source_queries": ["rise sleep app review", "circadian rhythm apps"]
     }
   ],
+  "competitor_variants": [
+    {
+      "name": "Pillow",
+      "url": "https://pillow.app",
+      "description": "Advanced sleep tracking app with Apple Watch integration and sleep analysis.",
+      "complaints": [
+        "Requires Apple Watch — excludes Android users and non-wearable preferences entirely",
+        "Sleep stage detection accuracy is questionable compared to clinical polysomnography",
+        "Premium features locked behind subscription after initially being a one-time purchase"
+      ],
+      "source_queries": ["pillow sleep app review", "apple watch sleep tracker"]
+    },
+    {
+      "name": "SleepScore",
+      "url": "https://sleepscore.com",
+      "description": "Clinically validated sleep improvement app with sonar-based tracking.",
+      "complaints": [
+        "Sonar tracking requires phone placement on nightstand and doesn't work with partners",
+        "Improvement suggestions are generic wellness tips, not personalized protocols",
+        "Data export is limited, making it impossible to correlate with other health metrics"
+      ],
+      "source_queries": ["sleepscore app review", "contactless sleep tracking"]
+    },
+    {
+      "name": "AutoSleep",
+      "url": "https://autosleepapp.com",
+      "description": "Automatic sleep tracking app for Apple Watch with no manual input required.",
+      "complaints": [
+        "Dashboard is information-dense to the point of being overwhelming and confusing",
+        "No actionable recommendations — just walls of data and charts",
+        "Apple ecosystem lock-in with zero cross-platform support"
+      ],
+      "source_queries": ["autosleep app review", "apple watch auto sleep tracker"]
+    }
+  ],
   "raw_complaint_pool": [
     "I know my sleep score was 62%, but tell me exactly what time I should have stopped drinking tea.",
     "Hardware trackers are too expensive for simple actionable bedtime routine advice.",
@@ -59,5 +104,25 @@
     "Why can't an app just say 'your last coffee should be at 1:47 PM based on your sleep data' instead of vague guidelines?",
     "I work rotating 12-hour shifts. Every sleep app assumes a normal 9-5 schedule and their advice is useless for me.",
     "Sleep trackers are the new step counters — they measure without improving anything."
+  ],
+  "complaint_pool_extended": [
+    "I have three sleep apps and a $300 ring. My sleep hasn't improved one bit because none of them tell me what to DO.",
+    "The supplement industry is full of snake oil. I need evidence-based timing for magnesium, not another 'sleep gummy' ad.",
+    "My therapist told me sleep anxiety from tracking is a real phenomenon. These apps make you obsess over scores.",
+    "I drink coffee at 3 PM and sleep fine. My wife drinks coffee at noon and can't sleep until 2 AM. One-size-fits-all advice is useless.",
+    "Night shift nurses are completely ignored by the sleep tech industry. Our circadian needs are fundamentally different.",
+    "I tried every 'sleep hygiene' tip on the internet. What I actually needed was a specific, personalized protocol adjusted daily.",
+    "Blue light blocking glasses, weighted blankets, melatonin — I've tried it all. Nobody tells me the RIGHT ORDER and TIMING.",
+    "My Fitbit says I got 7 hours of sleep. My body says I got 3. Measurement without insight is just data pollution.",
+    "Why does every sleep app want me to wear something to bed? I just want software that analyzes my BEHAVIOR, not my wrist.",
+    "I'd pay $20/month for an app that texts me 'stop drinking coffee NOW' at the precise right time based on my genetics.",
+    "Jet lag recovery apps give the same advice regardless of direction of travel. East-to-west is completely different from west-to-east.",
+    "New parents need sleep optimization more than anyone, yet no app accounts for unpredictable infant wake-ups in their models."
+  ],
+  "trend_signals": [
+    "CDC declared insufficient sleep a public health epidemic, with $411B annual US productivity losses",
+    "Pharmacogenomic testing for CYP1A2 (caffeine metabolism gene) is now available direct-to-consumer for $49",
+    "Apple and Google both added native sleep APIs in 2025, enabling zero-hardware behavioral sleep tracking",
+    "Huberman Lab podcast drove 12M+ searches for 'sleep protocol' in 2025, creating massive unserved demand"
   ]
 }

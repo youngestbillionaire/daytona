@@ -1,3 +1,4 @@
+import json
 import logging
 import re
 from typing import Callable, List, Optional
@@ -13,17 +14,29 @@ from orchestrator.models import (
 logger = logging.getLogger("founder0.stage.mvp_codegen")
 
 def validate_component_code(code: str) -> bool:
-    """Lightweight static check for valid React component."""
+    """Lightweight static check for valid, safe React component."""
+    if not code or not isinstance(code, str) or not code.strip():
+        return False
     if "export default" not in code:
         return False
-    if "eval(" in code:
+    if "eval(" in code or "Function(" in code:
         return False
-    # Check brace balance
+    # Check bracket and brace balance
     if code.count("{") != code.count("}"):
         return False
     if code.count("(") != code.count(")"):
         return False
+    if code.count("[") != code.count("]"):
+        return False
     return True
+
+def escape_jsx_string(s: str) -> str:
+    """Safely escape text for inclusion in JSX templates."""
+    if not s:
+        return ""
+    # Strip any potential raw script tags and escape double quotes
+    sanitized = s.replace("<script>", "").replace("</script>", "")
+    return sanitized.replace('"', '\\"')
 
 async def run_mvp_codegen(
     scaffold: MvpScaffoldOutput,
@@ -55,21 +68,25 @@ async def run_mvp_codegen(
 
     # Generate each feature component
     for feat in spec.feature_implementations:
-        emit(f"⚡ [MVP_CODE_GENERATION] Generating React component: '{feat.component_name}' for feature '{feat.feature_name}'...")
+        cname = feat.component_name or "FeatureCard"
+        emit(f"⚡ [MVP_CODE_GENERATION] Generating React component: '{cname}' for feature '{feat.feature_name}'...")
         
+        safe_title = escape_jsx_string(feat.feature_name)
+        safe_desc = escape_jsx_string(feat.ui_description)
+
         comp_code = f"""'use client';
 
 import React, {{ useState }} from 'react';
 
-export interface {feat.component_name}Props {{
+export interface {cname}Props {{
   title?: string;
   description?: string;
 }}
 
-export default function {feat.component_name}({{
-  title = "{feat.feature_name}",
-  description = "{feat.ui_description.replace('"', '\\"')}"
-}}: {feat.component_name}Props) {{
+export default function {cname}({{
+  title = "{safe_title}",
+  description = "{safe_desc}"
+}}: {cname}Props) {{
   const [isActive, setIsActive] = useState(false);
   const [counter, setCounter] = useState(0);
 
@@ -104,19 +121,19 @@ export default function {feat.component_name}({{
 """
         # Static validation
         if not validate_component_code(comp_code):
-            raise ValueError(f"Static check failed for component {feat.component_name}")
+            raise ValueError(f"Static check failed for component {cname}")
 
-        rel_path = f"components/features/{feat.component_name}.tsx"
+        rel_path = f"components/features/{cname}.tsx"
         await sandbox.write_file(rel_path, comp_code)
         generated_files.append(GeneratedFile(
             path=rel_path,
             content=comp_code,
-            component_name=feat.component_name
+            component_name=cname
         ))
         emit(f"  └─ Validated & written: {rel_path}")
 
-        component_imports.append(f"import {feat.component_name} from '../components/features/{feat.component_name}';")
-        component_tags.append(f"          <{feat.component_name} />")
+        component_imports.append(f"import {cname} from '../components/features/{cname}';")
+        component_tags.append(f"          <{cname} />")
 
     # Generate bespoke landing page using the generated components and copy
     emit("📝 [MVP_CODE_GENERATION] Injecting brand copy and dynamic feature grid into app/page.tsx...")

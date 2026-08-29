@@ -2,7 +2,7 @@
 
 > **Turn any 1-sentence startup idea into a real, running MVP, knowledge graph, pitch deck, and pitch script — completely automatically in under 60 seconds.**
 
-[![Tests](https://img.shields.io/badge/tests-19%20passed%20%E2%9C%93-emerald)](https://github.com/youngestbillionaire/daytona)
+[![Tests](https://img.shields.io/badge/tests-36%20passed%20%E2%9C%93-emerald)](https://github.com/youngestbillionaire/daytona)
 [![Python](https://img.shields.io/badge/python-3.11%2B-blue)](https://python.org)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.110%2B-teal)](https://fastapi.tiangolo.com)
 [![Next.js](https://img.shields.io/badge/Next.js-14%20App%20Router-black)](https://nextjs.org)
@@ -159,15 +159,19 @@ The generated pitch deck ([`artifacts/decks/<run_id>/index.html`](file:///c:/Use
 
 ## 🧪 Running Tests
 
-We test everything! Run all 19 unit, integration, and vertical tests with one command:
+We test everything! Run all 36 unit, integration, and bug tests with one command:
 
 ```bash
 python -m pytest tests/ -v
 ```
 
-All 19 tests pass 100% cleanly across:
+All 36 tests pass 100% cleanly across:
 - ✅ Full end-to-end pipeline execution
 - ✅ All 5 industry categories (`productivity`, `fintech`, `social`, `health`, `devtools`)
+- ✅ MVP codegen safety, XSS injection resistance, and JSX string sanitization
+- ✅ Pitch deck rendering, edge cases, and missing palette handling
+- ✅ Flexible market recon fixtures with seed reproducibility & randomization
+- ✅ Narration rhetoric, timing markers, and spoken pacing validation
 - ✅ REST API endpoints & 404 error handling
 - ✅ Daytona sandbox file read/write & command execution
 - ✅ Neo4j in-memory knowledge graph

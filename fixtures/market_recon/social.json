@@ -1,7 +1,17 @@
 {
   "category": "social",
   "keywords": ["hobby group organizer", "local interest meetup", "niche community finder", "anti-doomscroll social", "real-world connection app", "micro-community builder"],
+  "keyword_variations": [
+    ["stake-backed event RSVP", "anti-ghosting meetup app", "commitment-based social", "accountability hangout"],
+    ["local friend finder", "neighborhood activity matcher", "small group event planner", "post-college friendship app"],
+    ["micro-meetup organizer", "real-world social network", "hobby club platform", "genuine connection app"]
+  ],
   "market_size": "$8.1B community and events platform market",
+  "market_size_range": {
+    "min_billions": 7.4,
+    "max_billions": 9.3,
+    "label_template": "${value}B community and events platform market"
+  },
   "competitors": [
     {
       "name": "Meetup.com",
@@ -49,6 +59,41 @@
       "source_queries": ["bumble bff complaints", "friend finding apps review"]
     }
   ],
+  "competitor_variants": [
+    {
+      "name": "Nextdoor",
+      "url": "https://nextdoor.com",
+      "description": "Neighborhood-based social network for local community engagement.",
+      "complaints": [
+        "Devolved into a platform for complaints and passive-aggressive neighborhood drama",
+        "Not designed for hobby-based events — it's more NextDoor-Complaints than NextDoor-Friends",
+        "Age demographic skews heavily older, making it unsuitable for 25-35 year old professionals"
+      ],
+      "source_queries": ["nextdoor complaints", "neighborhood social app"]
+    },
+    {
+      "name": "Partiful",
+      "url": "https://partiful.com",
+      "description": "Beautiful event invitation and RSVP platform for personal gatherings.",
+      "complaints": [
+        "Only handles invitations — no discovery of events or strangers with shared interests",
+        "No commitment mechanism — people RSVP 'yes' and ghost just as easily as on any other platform",
+        "Designed for existing friend groups, not for making NEW friends in a new city"
+      ],
+      "source_queries": ["partiful app review", "event invitation app"]
+    },
+    {
+      "name": "Timeleft",
+      "url": "https://timeleft.com",
+      "description": "Weekly dinner matching service that pairs strangers at local restaurants.",
+      "complaints": [
+        "Fixed dinner format doesn't work for people who want hiking, gaming, or other hobby activities",
+        "Expensive per-event pricing ($15-30 per dinner) adds up quickly for regular social seekers",
+        "Algorithm matching is hit-or-miss — sometimes pairs introverts with large extrovert groups"
+      ],
+      "source_queries": ["timeleft dinner review", "stranger dinner matching app"]
+    }
+  ],
   "raw_complaint_pool": [
     "I just want to find 3 people to play board games with nearby without paying a $30 monthly subscription.",
     "People RSVP to events and then 80% ghost without penalty.",
@@ -58,5 +103,25 @@
     "Meetup charges organizers $200/year to run a free hiking group that benefits the community. It's predatory.",
     "I've been on Bumble BFF for a year. Matched with 40 people. Met exactly zero in person.",
     "The loneliness epidemic is real and tech companies are profiting from it instead of solving it."
+  ],
+  "complaint_pool_extended": [
+    "I organized a board game night for 8 people. 2 showed up. I stopped organizing after that humiliation.",
+    "Why does every friendship app use the same swipe mechanic as dating apps? Friendship doesn't work that way.",
+    "I'd literally pay $5 to guarantee that the 6 people who RSVP'd actually show up. That peace of mind is worth it.",
+    "Online communities are great but they don't solve loneliness. I need someone to grab coffee with on a Tuesday afternoon.",
+    "Facebook Groups used to be great for local meetups. Now the algorithm buries organic posts under ads and suggested content.",
+    "I'm 32 and moved to Austin. The only advice I get is 'join a CrossFit gym.' Not everyone wants to make friends through exercise.",
+    "Remote work killed the last reliable friendship pipeline — the office. Nothing has replaced it.",
+    "Small events (3-6 people) are where real friendships form. Every platform pushes massive 50-person networking events instead.",
+    "The cost of loneliness in healthcare is $6.7B annually. Why isn't any tech company seriously solving this?",
+    "I tried hosting events on Meetup. Got charged $200/year, had 30 RSVPs, and 4 people actually came. Never again.",
+    "Every new 'social' app I try has either zero users in my city or is secretly a dating app in disguise.",
+    "The paradox of social apps: the people who need them most are the least likely to cold-approach strangers on an app."
+  ],
+  "trend_signals": [
+    "US Surgeon General declared loneliness a public health crisis in 2023, equivalent health impact to smoking 15 cigarettes/day",
+    "Remote/hybrid work now affects 58% of knowledge workers, eliminating the primary adult friendship pipeline",
+    "Gen Z reports the highest loneliness rates of any generation despite being the most 'connected' online",
+    "Commitment device psychology research (Ariely, Thaler) shows $5 stakes increase follow-through by 3.2x"
   ]
 }

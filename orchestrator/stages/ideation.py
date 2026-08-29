@@ -192,73 +192,75 @@ async def run_ideation(
 
     prompt = f"""
 You are FOUNDER-0's core ideation intelligence — the most sophisticated venture synthesis engine ever built.
-Your job is to generate a genuinely INNOVATIVE, WORLD-CHANGING startup concept. Not incremental improvements.
-Not "Uber for X." Real zero-to-one thinking that would make Peter Thiel write a check.
+Your job is to generate a genuinely INNOVATIVE, CATEGORY-DEFINING startup concept. Not incremental SaaS features.
+Not "Uber for X" or generic dashboard tooling. Real Zero-to-One thinking that passes the Peter Thiel test.
 
 ═══ FIRST PRINCIPLES INNOVATION FRAMEWORK ═══
 
-Step 1 — ROOT CAUSE ANALYSIS:
-What is the DEEPEST root cause of the problem? Don't address symptoms. Go 5 levels deep.
-Ask "why?" five times until you reach the fundamental structural failure.
+Step 1 — ROOT CAUSE ANALYSIS (5-WHYS DEEP DIVE):
+What is the fundamental structural failure that incumbents ignore? Don't address symptoms (e.g. "people forget to pay").
+Identify the systemic root cause (e.g. "humans avoid interpersonal financial confrontation; software must remove humans from the enforcement loop").
 
-Step 2 — CONTRARIAN INSIGHT:
-What does the ENTIRE market believe that is actually WRONG?
-The best startups are built on a truth that most people disagree with.
-Frame this as: "Everyone assumes X. The real truth is Y."
+Step 2 — THE CONTRARIAN TRUTH:
+What is the non-obvious truth that 99% of the market gets wrong?
+Must strictly follow: "Everyone assumes X. The ground-truth reality is Y."
 
-Step 3 — 10x MOONSHOT THINKING:
-Don't make the existing solution 2x better. Make the PROBLEM not exist.
-How would you solve this if you had unlimited resources and no legacy constraints?
-Then work backwards to what's buildable today.
+Step 3 — 10x MOONSHOT PARADIGM SHIFT:
+Don't make the existing task 10% faster. Make the task CEASE TO EXIST.
+Work backwards from the ultimate friction-free state.
 
-Step 4 — PSYCHOLOGICAL HOOK:
-Why will users COMPULSIVELY adopt this? Tap into:
-- Loss aversion (what are they LOSING by not using this?)
-- Status signaling (how does this make them look smarter/better?)
-- Commitment devices (how does the product enforce follow-through?)
+Step 4 — PSYCHOLOGICAL PERSUASION HOOK:
+Why will users obsessively adopt this? Address core behavioral drivers:
+- Loss Aversion (what $ or dignity are they losing daily right now?)
+- Commitment Devices (how does skin-in-the-game guarantee follow-through?)
+- Specificity Bias (why precise guidance converts 5x better than generic advice)
 
-Step 5 — TECHNICAL MOAT:
-What specific, compounding technical advantage makes this impossible to clone?
-Network effects? Proprietary data? Switching costs?
+Step 5 — UNCLONEABLE TECHNICAL MOAT:
+What compounding mechanism (data flywheel, state-commitment graphs, calibration models) creates insurmountable switching costs?
 
-═══ INPUT ═══
+═══ STRICT QUALITY GATES & ANTI-PATTERNS ═══
+- NO generic suffixes (-ify, -ly, -hub, -box, -bot). Product names must be punchy, memorable (1-2 words), and sound like a venture-backed category king.
+- Taglines must be 6-10 words, using power verbs and creating a curiosity gap.
+- Core features must describe concrete engineering mechanisms and explicit emotional payoffs, NOT vague marketing phrases like "AI-powered smart insights".
 
-ORIGINAL IDEA:
+═══ INPUT CONTEXT ═══
+
+ORIGINAL FOUNDER IDEA:
 "{idea}"
 
-IDENTIFIED MARKET WHITESPACE:
+IDENTIFIED STRUCTURAL WHITESPACE:
 "{whitespace.primary_gap}"
 
-KEY USER PAIN POINTS (REAL REDDIT/HN COMPLAINTS):
+VERIFIED USER COMPLAINTS & FRICTION POINTS:
 {json.dumps(whitespace.supporting_complaints, indent=2)}
 
-═══ OUTPUT ═══
+═══ STRICT JSON SCHEMA ═══
 
 Return a strict JSON object with this EXACT schema:
 {{
-  "product_name": "string (punchy, memorable, 1-2 word brand that sounds like a $100M company)",
-  "tagline": "string (sharp 6-10 word tagline that creates curiosity)",
-  "one_line_pitch": "string (compelling single sentence that makes someone say 'wait, tell me more')",
-  "elevator_pitch": "string (4-5 sentences: problem → root cause → solution → why now → moat)",
+  "product_name": "string (punchy, memorable, 1-2 words, e.g. 'DeadlockDAO', 'PhantomCFO')",
+  "tagline": "string (sharp 6-10 word tagline using active verbs and creating curiosity)",
+  "one_line_pitch": "string (compelling single sentence stating the root shift and 10x value)",
+  "elevator_pitch": "string (4-5 sentences: problem → root cause → solution → why now → technical moat)",
   "core_features": [
-    {{"name": "string", "description": "string (specific, not vague)", "user_value": "string (emotional benefit, not feature restatement)"}},
+    {{"name": "string", "description": "string (precise technical mechanism)", "user_value": "string (visceral emotional payoff)"}},
     {{"name": "string", "description": "string", "user_value": "string"}},
     {{"name": "string", "description": "string", "user_value": "string"}}
   ],
   "target_user_persona": {{
-    "name": "string (vivid archetype name like 'The Exhausted Peacekeeper')",
-    "description": "string (specific demographics + psychographics)",
+    "name": "string (vivid archetype, e.g. 'The Exhausted Peacekeeper')",
+    "description": "string (demographics + psychographics)",
     "pain_points": ["string", "string", "string"]
   }},
-  "monetization_model": "string (specific pricing mechanism, not just 'freemium')",
-  "pricing_suggestion": "string (concrete tiers with $ amounts)",
-  "differentiation_from_competitors": "string (specific, not generic)",
-  "contrarian_insight": "string (the non-obvious truth this startup is built on)",
-  "technical_moat": "string (specific defensibility mechanism that compounds)",
-  "tam_estimate": "string ($ amount with calculation logic)",
-  "go_to_market_wedge": "string (specific initial beachhead and viral mechanism)",
-  "psychological_hook": "string (the behavioral/emotional trigger driving adoption)",
-  "ten_x_factor": "string (why this is 10x better, not 2x)",
+  "monetization_model": "string (aligned with value capture, e.g. transaction take rate / tiered pro)",
+  "pricing_suggestion": "string (concrete tier breakdown with dollar amounts)",
+  "differentiation_from_competitors": "string (fundamental structural shift vs incumbents)",
+  "contrarian_insight": "string (Must be: 'Everyone assumes X. The ground-truth reality is Y.')",
+  "technical_moat": "string (compounding data flywheel or network-effect switching costs)",
+  "tam_estimate": "string (calculated as: population × willingness-to-pay formula)",
+  "go_to_market_wedge": "string (specific beachhead community and viral coefficient mechanic)",
+  "psychological_hook": "string (behavioral psychology driver: loss aversion, commitment device, etc.)",
+  "ten_x_factor": "string (why this eliminates the problem entirely rather than 2x speedup)",
   "rejected_names": ["string", "string", "string"],
   "rejected_names_reasoning": ["string", "string", "string"],
   "brand_tone": "string (3-4 adjective brand voice description)",
@@ -268,9 +270,8 @@ Return a strict JSON object with this EXACT schema:
 
     system_prompt = (
         "You are FOUNDER-0's core ideation intelligence — the most sophisticated venture synthesis engine ever built. "
-        "You think like a combination of Peter Thiel (zero-to-one), Paul Graham (startup fundamentals), "
-        "and Daniel Kahneman (behavioral psychology). "
-        "Output strict, valid JSON only. No markdown fences. No prose."
+        "You think like Peter Thiel (Zero to One), Paul Graham (startup insights), and Daniel Kahneman (behavioral psychology). "
+        "Reject all incremental SaaS cliches. Output strict, valid JSON only. No markdown fences. No preamble."
     )
 
     parsed_json, provider = await nosana_client.generate_chat(

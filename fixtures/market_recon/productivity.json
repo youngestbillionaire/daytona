@@ -1,7 +1,17 @@
 {
   "category": "productivity",
   "keywords": ["bill split", "roommate expense tracker", "shared house chores", "splitwise alternative", "roommate debt", "household automation", "co-living fintech"],
+  "keyword_variations": [
+    ["roommate bills", "house expense app", "shared rent tracker", "group living fintech"],
+    ["chore scheduler", "household task manager", "roommate accountability", "co-living disputes"],
+    ["automatic bill splitting", "shared expense escrow", "roommate payment enforcement", "fair split calculator"]
+  ],
   "market_size": "$4.2B shared household economy",
+  "market_size_range": {
+    "min_billions": 3.8,
+    "max_billions": 5.1,
+    "label_template": "${value}B shared household economy"
+  },
   "competitors": [
     {
       "name": "Splitwise",
@@ -62,6 +72,41 @@
       "source_queries": ["zelle problems reddit", "peer payment alternatives"]
     }
   ],
+  "competitor_variants": [
+    {
+      "name": "Beem It",
+      "url": "https://beemit.com.au",
+      "description": "Social payment platform for splitting bills and requesting money from friends.",
+      "complaints": [
+        "Limited to Australian market with no international expansion plans",
+        "No recurring expense automation or household budget features",
+        "Payment requests feel just as awkward as texting someone directly"
+      ],
+      "source_queries": ["beem it app review", "australian bill split app"]
+    },
+    {
+      "name": "Cospender",
+      "url": "https://cospender.com",
+      "description": "Shared expense and budget management tool for couples and groups.",
+      "complaints": [
+        "Designed for couples, doesn't scale well to 4+ roommate households",
+        "No enforcement mechanism — just another passive ledger",
+        "Missing chore-to-expense linking that large households actually need"
+      ],
+      "source_queries": ["couple expense tracker", "shared budget app"]
+    },
+    {
+      "name": "Plates by Splitwise",
+      "url": "https://plates.splitwise.com",
+      "description": "Receipt splitting app that lets you assign line items from restaurant bills.",
+      "complaints": [
+        "Only works for restaurant receipts, not household bills or utilities",
+        "OCR accuracy is mediocre on crumpled or faded receipts",
+        "Doesn't integrate with the main Splitwise balance system seamlessly"
+      ],
+      "source_queries": ["receipt splitting app", "restaurant bill splitter"]
+    }
+  ],
   "raw_complaint_pool": [
     "I hate having to text my deadbeat roommate 15 times to pay $12 for toilet paper.",
     "People make up excuses like 'I didn't eat those eggs' after agreeing to split groceries.",
@@ -71,5 +116,25 @@
     "My roommate owes me $340 across 3 months and pretends to forget every time I bring it up.",
     "I literally moved out of a shared apartment because the financial tension destroyed the friendship.",
     "Why can't shared expenses just auto-deduct from everyone's account like a subscription? It's 2026."
+  ],
+  "complaint_pool_extended": [
+    "My roommate conveniently 'forgets' his wallet every time we go grocery shopping together.",
+    "We tried a shared spreadsheet for expenses and it devolved into passive-aggressive cell edits within a week.",
+    "The mental load of being the household accountant is exhausting — I didn't sign up to be everyone's CFO.",
+    "I've started buying my own toilet paper and labeling it because I'm tired of subsidizing freeloaders.",
+    "Every bill-splitting app assumes everyone is honest and cooperative. That's a fantasy.",
+    "Someone needs to build an app with actual consequences for not paying — not just another reminder notification.",
+    "I spend more time managing shared expenses than I spend on my actual job's expense reports.",
+    "Our group chat has devolved into nothing but passive-aggressive Splitwise notifications.",
+    "The awkwardness of asking for $7 back from a friend is somehow worse than just eating the cost every time.",
+    "I wish there was an automatic system where bills get paid and I never have to think about it or confront anyone.",
+    "My landlord doesn't care who pays rent — she just wants the full amount. Why can't an app handle that coordination?",
+    "Chores and money are intertwined — if you never clean, you should pay more. No app handles this."
+  ],
+  "trend_signals": [
+    "Co-living startups raised $2.3B globally in 2025, but tenant fintech remains fragmented",
+    "GenZ renters share housing at 2x the rate of millennials at the same age",
+    "Embedded finance APIs (Stripe Treasury, Unit) now enable escrow-like features at near-zero cost",
+    "Reddit r/roommates grew 340% in 2024-2025, indicating rising demand for conflict resolution tools"
   ]
 }

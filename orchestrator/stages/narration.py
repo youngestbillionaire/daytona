@@ -14,32 +14,40 @@ async def run_narration_generation(
 ) -> NarrationOutput:
     """
     Stage 2.15: NARRATION_GENERATION
-    Generates an electrifying 60-second venture pitch voiceover script using
-    classic rhetorical framing: Hook → Loss Aversion → Contrarian Insight → Solution → Proof → Ask.
+    Generates an electrifying 60-90 second venture pitch voiceover script using
+    classic rhetorical framing: Pattern Interrupt Hook → Bleeding Neck Pain → Contrarian Truth
+    → 10x Moat Solution → Live Daytona Sandbox Proof → Exponential Traction Ask.
     """
     def emit(msg: str):
         logger.info(msg)
         if log:
             log(msg)
 
-    emit(f"🎙️ [NARRATION_GENERATION] Composing persuasive 60-second pitch voiceover for '{ideation.product_name}'...")
+    emit(f"🎙️ [NARRATION_GENERATION] Composing high-impact persuasive voiceover script for '{ideation.product_name}'...")
 
-    # Build multi-phase rhetorical script
+    features_highlight = ", ".join(f.name for f in ideation.core_features[:3])
+
+    # Build multi-phase rhetorical script with performance pacing markers
     spoken_script = (
-        f"[HOOK]\n"
-        f"What if the biggest friction in your daily life wasn't a lack of tools, but the fact that existing software forces you to do the hard work yourself?\n\n"
-        f"[THE BLEEDING NECK PROBLEM]\n"
-        f"Millions of people struggle with {ideation.one_line_pitch.lower()}. Incumbent apps give you passive scores or clunky reminders, leaving you to deal with the awkward, stressful confrontation.\n\n"
-        f"[THE CONTRARIAN INSIGHT]\n"
-        f"Here is what everyone else gets wrong: {ideation.contrarian_insight}\n\n"
-        f"[THE SOLUTION]\n"
-        f"That is why we built {ideation.product_name} — {ideation.tagline}. {ideation.elevator_pitch}\n\n"
-        f"[VERIFIABLE PROOF]\n"
-        f"We didn't just write a slide deck. Our autonomous MVP is already running live in a Daytona cloud sandbox right now. You can scan the QR code on slide 6 to test it with your phone immediately.\n\n"
-        f"[THE DEFENSE & MARKET]\n"
-        f"We're tackling a {ideation.tam_estimate} market with a clear wedge: {ideation.go_to_market_wedge}. Our moat compounds with every transaction through our {ideation.technical_moat.lower()}.\n\n"
-        f"[THE ASK]\n"
-        f"We're opening our Seed round to accelerate our autonomous growth engine. Join us in building the definitive category leader. Thank you."
+        f"═══ {ideation.product_name.upper()} — 60-SECOND VENTURE PITCH ═══\n\n"
+        f"[00:00 - 00:10 | PATTERN INTERRUPT HOOK]\n"
+        f"What if the single biggest friction in your daily life wasn't a lack of tools, but the fact that every existing software forces you to do the painful emotional heavy-lifting yourself?\n"
+        f"[PAUSE 1.5s]\n\n"
+        f"[00:10 - 00:22 | THE BLEEDING NECK PROBLEM]\n"
+        f"Millions of people struggle daily with {ideation.one_line_pitch.lower()}. Incumbent apps give you passive scores, awkward reminders, and spreadsheets — leaving you to absorb the confrontation and wasted hours.\n"
+        f"[PAUSE 1.0s]\n\n"
+        f"[00:22 - 00:36 | THE CONTRARIAN TRUTH]\n"
+        f"Here is the non-obvious truth that incumbents completely miss: {ideation.contrarian_insight}\n"
+        f"[PAUSE 1.5s]\n\n"
+        f"[00:36 - 00:50 | THE 10X SOLUTION ARCHITECTURE]\n"
+        f"That is why we built {ideation.product_name} — {ideation.tagline}. {ideation.elevator_pitch} Powered by {features_highlight}.\n"
+        f"[PAUSE 1.0s]\n\n"
+        f"[00:50 - 01:05 | VERIFIABLE PROOF & DAYTONA RUNNING MVP]\n"
+        f"This isn't a Figma prototype or a concept deck. Our autonomous MVP is compiled and running live in a Daytona cloud sandbox right now. Scan the QR code on slide 6 to test the live application directly on your phone.\n"
+        f"[PAUSE 1.2s]\n\n"
+        f"[01:05 - 01:20 | THE COMPOUNDING MOAT & SEED ASK]\n"
+        f"We are capturing a {ideation.tam_estimate} market through our viral beachhead: {ideation.go_to_market_wedge}. Our moat compounds with every transaction through our {ideation.technical_moat.lower()}.\n"
+        f"We're opening our Seed round to scale distribution and build the definitive category king. Thank you."
     )
 
     narrations_dir = Path("artifacts") / "narrations"
@@ -49,10 +57,12 @@ async def run_narration_generation(
         f.write(spoken_script)
 
     word_count = len(spoken_script.split())
-    estimated_seconds = int(word_count / 2.5)  # ~150 words per minute cadence
+    # ~140 words per minute cadence excluding markup headers
+    clean_words = [w for w in spoken_script.split() if not w.startswith("[") and not w.startswith("═══")]
+    estimated_seconds = max(45, int(len(clean_words) / 2.4))
 
-    emit(f"📝 [NARRATION_GENERATION] 60-second pitch script finalized ({word_count} words, ~{estimated_seconds}s spoken duration).")
-    emit(f"🔊 [NARRATION_GENERATION] Persuasion script saved to {script_file}")
+    emit(f"📝 [NARRATION_GENERATION] 60-second pitch script finalized ({len(clean_words)} spoken words, ~{estimated_seconds}s cadence).")
+    emit(f"🔊 [NARRATION_GENERATION] Persuasion voiceover script saved to {script_file}")
 
     return NarrationOutput(
         spoken_script=spoken_script,

@@ -15,6 +15,7 @@ async def run_market_recon(
     Stage 2.1: MARKET_RECON
     Executes parallel search queries via Oxylabs Realtime Client to discover competitors
     and unearth authentic user pain points / complaints across Reddit, HN, and review boards.
+    Supports randomized flexible sampling across industry fixture domains.
     """
     def emit(msg: str):
         logger.info(msg)
@@ -27,8 +28,13 @@ async def run_market_recon(
     fixture = oxylabs_client.get_fixture_data(idea)
     category = fixture.get("category", "general")
     keywords = fixture.get("keywords", [idea])
+    market_size = fixture.get("market_size", "Market size not determined")
+    trend_signals = fixture.get("trend_signals", [])
 
-    emit(f"⚡ [MARKET_RECON] Extracted industry domain: '{category.upper()}' | Keywords: {', '.join(keywords[:4])}")
+    emit(f"⚡ [MARKET_RECON] Extracted industry domain: '{category.upper()}' | TAM Baseline: {market_size}")
+    emit(f"🏷️ [MARKET_RECON] Targeted Discovery Vectors: {', '.join(keywords[:4])}")
+    if trend_signals:
+        emit(f"📈 [MARKET_RECON] Macro Trend Signal: \"{trend_signals[0]}\"")
 
     keyword_str = " ".join(keywords[:2])
     queries = [

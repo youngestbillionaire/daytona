@@ -1,7 +1,17 @@
 {
   "category": "devtools",
   "keywords": ["ai database migration linter", "safe schema migration tool", "zero downtime postgres migrations", "sql schema diff", "database CI safety", "migration risk analyzer"],
+  "keyword_variations": [
+    ["postgres migration firewall", "schema change risk analysis", "DDL lock prediction", "migration blast radius"],
+    ["database CI/CD safety", "production migration simulator", "zero downtime DDL", "table lock analyzer"],
+    ["automated migration review", "schema drift detection", "safe ALTER TABLE tool", "migration rollback planner"]
+  ],
   "market_size": "$3.7B database management tools market",
+  "market_size_range": {
+    "min_billions": 3.2,
+    "max_billions": 4.4,
+    "label_template": "${value}B database management tools market"
+  },
   "competitors": [
     {
       "name": "Prisma Migrate",
@@ -49,6 +59,41 @@
       "source_queries": ["atlas database tool review", "ariga atlas migration"]
     }
   ],
+  "competitor_variants": [
+    {
+      "name": "Bytebase",
+      "url": "https://bytebase.com",
+      "description": "Database DevOps platform with schema change review and deployment workflows.",
+      "complaints": [
+        "Self-hosted deployment is complex and resource-intensive",
+        "Free tier is severely limited — most useful features require enterprise license",
+        "GUI-first approach doesn't integrate well with Git-based migration workflows"
+      ],
+      "source_queries": ["bytebase review", "database devops platform"]
+    },
+    {
+      "name": "pgroll",
+      "url": "https://github.com/xataio/pgroll",
+      "description": "Zero-downtime, reversible Postgres schema migrations by Xata.",
+      "complaints": [
+        "Postgres-only — no MySQL, MariaDB, or multi-database support",
+        "Relatively new with limited production battle-testing at scale",
+        "Adds complexity with its versioned view approach that confuses application code"
+      ],
+      "source_queries": ["pgroll review", "zero downtime postgres migrations"]
+    },
+    {
+      "name": "Sqitch",
+      "url": "https://sqitch.org",
+      "description": "Database-native change management using plain SQL scripts without ORMs.",
+      "complaints": [
+        "No GUI or web interface — purely CLI which limits adoption in mixed teams",
+        "Documentation is sparse and community is small compared to Flyway/Liquibase",
+        "Zero safety analysis — just executes SQL in order without risk assessment"
+      ],
+      "source_queries": ["sqitch review", "native sql migration tool"]
+    }
+  ],
   "raw_complaint_pool": [
     "Our junior dev ran an `ALTER TABLE ADD COLUMN NOT NULL` and locked our 50GB table for 2 hours.",
     "Database migration tools don't warn you if a migration will lock rows under heavy production traffic.",
@@ -58,5 +103,25 @@
     "I wish there was a tool that could tell me 'this ALTER will lock writes for ~45 minutes on your 200M row table' BEFORE I run it.",
     "Our team spent 3 days debugging a migration that silently converted timestamps to dates and truncated all time data.",
     "The cost of a single bad migration in production ($50K+ in lost revenue) far exceeds what any migration tool costs. Yet none of them focus on safety."
+  ],
+  "complaint_pool_extended": [
+    "We rolled back a migration that took 6 hours to apply, only to discover the rollback also took 6 hours. No tool warned us.",
+    "Our migration CI passes locally but fails in production because nobody tests against production-scale table sizes.",
+    "I've seen three teams at my company ship migrations that silently drop NOT NULL constraints. Zero automated checks caught it.",
+    "Adding an index on a 500M row table saturated our disk I/O for 90 minutes. The migration tool said 'success' instantly.",
+    "We need a tool that understands our ORM generates terrible SQL and warns us before it hits production.",
+    "Foreign key additions on large tables are silent killers — they lock both tables and nobody realizes until the alerts fire.",
+    "My company spent $180K on a database consultant to review migrations manually. An automated tool should do this.",
+    "Schema drift between staging and production has caused 4 incidents this year. No migration tool detects this proactively.",
+    "We had to emergency-revert a migration at 2 AM because it added a UNIQUE constraint that violated existing duplicate data.",
+    "Every migration tool treats 'apply forward' as the happy path and 'rollback' as an afterthought. Real-world is the opposite.",
+    "Our DBA reviews every migration PR by hand. It takes 2-3 days per review. This is the bottleneck, not writing the migrations.",
+    "Enum type changes in Postgres are a nightmare — no migration tool handles the ALTER TYPE ... ADD VALUE limitation gracefully."
+  ],
+  "trend_signals": [
+    "Postgres surpassed MySQL as the most popular database in 2025 Stack Overflow survey",
+    "Database-as-a-Service (Neon, PlanetScale, Supabase) raised $800M+ combined, all needing migration safety",
+    "SOC2 and HIPAA compliance now require documented migration impact analysis for audit trails",
+    "AI-generated code (Copilot, Cursor) is producing more migrations written by developers unfamiliar with database internals"
   ]
 }
