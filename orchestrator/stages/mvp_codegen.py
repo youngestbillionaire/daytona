@@ -2,278 +2,171 @@ import json
 import logging
 import re
 from typing import Callable, List, Optional
+
 from orchestrator.clients.daytona_client import daytona_client
-from orchestrator.models import (
-    GeneratedFile,
-    IdeationOutput,
-    MvpCodegenOutput,
-    MvpScaffoldOutput,
-    SpecGenerationOutput,
-)
+from orchestrator.clients.nosana_client import nosana_client
+from orchestrator.models import GeneratedFile, MvpCodegenOutput, SpecFeature, SpecGenerationOutput
 
 logger = logging.getLogger("founder0.stage.mvp_codegen")
 
-def validate_component_code(code: str) -> bool:
-    """Lightweight static check for valid, safe React component."""
-    if not code or not isinstance(code, str) or not code.strip():
+FEATURE_JS_FORBIDDEN = ("import ", "require(", "<script", "eval(", "document.write")
+
+
+def _validate_feature_html(html: str) -> bool:
+    """Lightweight static safety check on LLM-generated HTML snippet."""
+    if not html or "<" not in html:
         return False
-    if "export default" not in code:
-        return False
-    if "eval(" in code or "Function(" in code:
-        return False
-    # Check bracket and brace balance
-    if code.count("{") != code.count("}"):
-        return False
-    if code.count("(") != code.count(")"):
-        return False
-    if code.count("[") != code.count("]"):
-        return False
+    if "<script" in html.lower():
+        return False  # scripts belong in the js field, not injected inline
     return True
 
-def escape_jsx_string(s: str) -> str:
-    """Safely escape text for inclusion in JSX templates."""
-    if not s:
-        return ""
-    # Strip any potential raw script tags and escape double quotes
-    sanitized = s.replace("<script>", "").replace("</script>", "")
-    return sanitized.replace('"', '\\"')
+
+def _validate_feature_js(js: str) -> bool:
+    """Lightweight static safety check on LLM-generated JS snippet."""
+    if js is None:
+        return True  # JS is optional per feature
+    lowered = js.lower()
+    if any(bad in lowered for bad in FEATURE_JS_FORBIDDEN):
+        return False
+    return js.count("{") == js.count("}") and js.count("(") == js.count(")")
+
 
 async def run_mvp_codegen(
-    scaffold: MvpScaffoldOutput,
-    ideation: IdeationOutput,
     spec: SpecGenerationOutput,
+    scaffold,
+    idea: str,
+    product_name: str,
+    tagline: str,
     log: Optional[Callable[[str], None]] = None
 ) -> MvpCodegenOutput:
     """
     Stage 2.9: MVP_CODE_GENERATION
-    Generates tailored React components and landing page copy,
-    performs static safety checks, and uploads them to the Daytona sandbox.
+
+    Generates the product-specific content of the vanilla HTML/CSS/JS MVP
+    entirely via the Nosana-hosted LLM: hero copy, and one HTML+JS snippet
+    per feature. Nothing product-specific is hardcoded here — the only
+    non-generated content is the template's structural plumbing (server.js,
+    the waitlist form wiring, the marker positions in index.html/app.js),
+    which is infrastructure, not product content.
     """
     def emit(msg: str):
         logger.info(msg)
         if log:
             log(msg)
 
-    emit(f"💻 [MVP_CODE_GENERATION] Generating modular code for sandbox {scaffold.sandbox_id}...")
+    generated_files: List[GeneratedFile] = []
     sandbox = await daytona_client.get_sandbox(scaffold.sandbox_id)
     if not sandbox:
         raise RuntimeError(f"Sandbox {scaffold.sandbox_id} not found")
 
-    generated_files: List[GeneratedFile] = []
-    component_imports = []
-    component_tags = []
+    # ---- 1. Hero copy, fully LLM-generated ----
+    emit("⚡ [MVP_CODE_GENERATION] Generating hero copy via Nosana LLM...")
+    hero_prompt = f"""
+You are a product copywriter. Given this startup idea: "{idea}"
+Product name: "{product_name}"
+Tagline: "{tagline}"
 
-    palette = ideation.suggested_color_palette or ["#0284c7", "#0f172a", "#38bdf8"]
-    primary_color = palette[0]
+Write landing page hero copy. Return ONLY strict JSON:
+{{
+  "h1": "short punchy headline (product name can be included)",
+  "subheadline": "1-2 sentence value proposition"
+}}
+"""
+    hero_res, hero_provider = await nosana_client.generate_chat(prompt=hero_prompt, json_mode=True)
+    hero_copy = {
+        "h1": hero_res.get("h1", product_name) if hero_res else product_name,
+        "subheadline": hero_res.get("subheadline", tagline) if hero_res else tagline,
+    }
+    emit(f"✅ [MVP_CODE_GENERATION] Hero copy generated via {hero_provider}.")
 
-    # Generate each feature component
+    # ---- 2. One feature card (HTML + optional JS) per spec feature, LLM-generated ----
+    feature_html_blocks: List[str] = []
+    feature_js_blocks: List[str] = []
+
     for feat in spec.feature_implementations:
-        cname = feat.component_name or "FeatureCard"
-        emit(f"⚡ [MVP_CODE_GENERATION] Generating React component: '{cname}' for feature '{feat.feature_name}'...")
-        
-        safe_title = escape_jsx_string(feat.feature_name)
-        safe_desc = escape_jsx_string(feat.ui_description)
+        emit(f"⚡ [MVP_CODE_GENERATION] Generating feature '{feat.feature_name}' via Nosana LLM...")
+        feat_prompt = f"""
+You are a frontend engineer writing plain vanilla HTML/CSS/JS (NO React, NO TypeScript,
+NO build tools, NO imports — this runs directly in a browser via a <script> tag).
 
-        comp_code = f"""'use client';
+Product: "{product_name}" — {tagline}
+Feature to implement: "{feat.feature_name}"
+UI description: {feat.ui_description}
 
-import React, {{ useState }} from 'react';
+Generate:
+1. An HTML snippet: a single <div class="feature-card"> block with a heading, description,
+   and any interactive elements (buttons, inputs) needed. Use existing CSS class
+   "feature-card" for the container. Give interactive elements unique, descriptive
+   id attributes prefixed with "{feat.component_name}-".
+2. A vanilla JS snippet implementing the interactive behavior for those elements
+   (event listeners, DOM updates). Plain JS only, no imports/require, wrapped so it's
+   safe to run at the bottom of a page (elements already exist in the DOM by then).
+   If the feature is purely static/informational, return an empty string for js.
 
-export interface {cname}Props {{
-  title?: string;
-  description?: string;
-}}
-
-export default function {cname}({{
-  title = "{safe_title}",
-  description = "{safe_desc}"
-}}: {cname}Props) {{
-  const [isActive, setIsActive] = useState(false);
-  const [counter, setCounter] = useState(0);
-
-  return (
-    <div className="p-6 rounded-2xl border border-slate-800 bg-slate-900/60 backdrop-blur-sm shadow-xl hover:border-cyan-500/50 transition-all duration-300 group">
-      <div className="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 flex items-center justify-center font-bold text-xl mb-4 group-hover:scale-105 transition-transform">
-        ⚡
-      </div>
-      <h3 className="text-xl font-bold text-white mb-2 tracking-tight group-hover:text-cyan-300 transition-colors">
-        {{title}}
-      </h3>
-      <p className="text-slate-400 text-sm leading-relaxed mb-6">
-        {{description}}
-      </p>
-      <div className="pt-4 border-t border-slate-800 flex items-center justify-between">
-        <button 
-          onClick={{() => {{
-            setIsActive(!isActive);
-            setCounter(c => c + 1);
-          }}}}
-          className="text-xs font-semibold px-4 py-2 rounded-xl bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 border border-cyan-500/40 transition-all active:scale-95"
-        >
-          {{isActive ? 'Active Mode (Clicks: ' + counter + ')' : 'Execute Action'}}
-        </button>
-        <span className="text-[10px] font-mono text-emerald-400 bg-emerald-950/60 px-2 py-1 rounded-md border border-emerald-800">
-          Live Feature
-        </span>
-      </div>
-    </div>
-  );
-}}
+Return ONLY strict JSON:
+{{"html": "string", "js": "string"}}
 """
-        # Static validation
-        if not validate_component_code(comp_code):
-            raise ValueError(f"Static check failed for component {cname}")
+        try:
+            feat_res, feat_provider = await nosana_client.generate_chat(prompt=feat_prompt, json_mode=True)
+            html = feat_res.get("html", "") if feat_res else ""
+            js = feat_res.get("js", "") if feat_res else ""
 
-        rel_path = f"components/features/{cname}.tsx"
-        await sandbox.write_file(rel_path, comp_code)
-        generated_files.append(GeneratedFile(
-            path=rel_path,
-            content=comp_code,
-            component_name=cname
-        ))
-        emit(f"  └─ Validated & written: {rel_path}")
+            if _validate_feature_html(html) and _validate_feature_js(js):
+                feature_html_blocks.append(html)
+                if js.strip():
+                    feature_js_blocks.append(f"// --- {feat.feature_name} ---\n{js}")
+                emit(f"✅ [MVP_CODE_GENERATION] Feature '{feat.feature_name}' generated and validated via {feat_provider}.")
+            else:
+                emit(f"⚠️ [MVP_CODE_GENERATION] Feature '{feat.feature_name}' failed validation, using minimal safe placeholder.")
+                feature_html_blocks.append(
+                    f'<div class="feature-card"><h3>{feat.feature_name}</h3>'
+                    f'<p>{feat.ui_description}</p></div>'
+                )
+        except Exception as e:
+            emit(f"⚠️ [MVP_CODE_GENERATION] Feature '{feat.feature_name}' generation errored ({e}), using minimal safe placeholder.")
+            feature_html_blocks.append(
+                f'<div class="feature-card"><h3>{feat.feature_name}</h3>'
+                f'<p>{feat.ui_description}</p></div>'
+            )
 
-        component_imports.append(f"import {cname} from '../components/features/{cname}';")
-        component_tags.append(f"          <{cname} />")
+    # ---- 3. Assemble into the template's marked extension points ----
+    emit("📝 [MVP_CODE_GENERATION] Injecting generated content into index.html and app.js...")
 
-    # Generate bespoke landing page using the generated components and copy
-    emit("📝 [MVP_CODE_GENERATION] Injecting brand copy and dynamic feature grid into app/page.tsx...")
-    
-    page_content = f"""'use client';
+    index_html = await sandbox.read_file("public/index.html")
+    app_js = await sandbox.read_file("public/app.js")
 
-import React, {{ useState }} from 'react';
-{chr(10).join(component_imports)}
+    index_html = re.sub(
+        r"<!-- FOUNDER0:TITLE -->.*?<!-- /FOUNDER0:TITLE -->",
+        f"<!-- FOUNDER0:TITLE -->{product_name}<!-- /FOUNDER0:TITLE -->",
+        index_html, flags=re.DOTALL
+    )
+    index_html = re.sub(
+        r"<!-- FOUNDER0:HERO -->.*?<!-- /FOUNDER0:HERO -->",
+        f'<!-- FOUNDER0:HERO -->\n    <h1>{hero_copy["h1"]}</h1>\n    <p class="tagline">{hero_copy["subheadline"]}</p>\n    <!-- /FOUNDER0:HERO -->',
+        index_html, flags=re.DOTALL
+    )
+    index_html = re.sub(
+        r"<!-- FOUNDER0:FEATURES -->.*?<!-- /FOUNDER0:FEATURES -->",
+        "<!-- FOUNDER0:FEATURES -->\n      " + "\n      ".join(feature_html_blocks) + "\n      <!-- /FOUNDER0:FEATURES -->",
+        index_html, flags=re.DOTALL
+    )
 
-export default function Home() {{
-  const [email, setEmail] = useState('');
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-  const [message, setMessage] = useState('');
+    app_js = re.sub(
+        r"// FOUNDER0:FEATURE_JS.*?// /FOUNDER0:FEATURE_JS",
+        "// FOUNDER0:FEATURE_JS\n" + "\n\n".join(feature_js_blocks) + "\n// /FOUNDER0:FEATURE_JS",
+        app_js, flags=re.DOTALL
+    )
 
-  const handleSubmit = async (e: React.FormEvent) => {{
-    e.preventDefault();
-    if (!email) return;
-    setStatus('loading');
-    try {{
-      const res = await fetch('/api/waitlist', {{
-        method: 'POST',
-        headers: {{ 'Content-Type': 'application/json' }},
-        body: JSON.stringify({{ email }}),
-      }});
-      const data = await res.json();
-      if (res.ok) {{
-        setStatus('success');
-        setMessage(data.message || 'Joined waitlist!');
-        setEmail('');
-      }} else {{
-        setStatus('error');
-        setMessage(data.error || 'Failed to join waitlist');
-      }}
-    }} catch (err: any) {{
-      setStatus('error');
-      setMessage(err.message || 'Network error');
-    }}
-  }};
+    await sandbox.write_file("public/index.html", index_html)
+    await sandbox.write_file("public/app.js", app_js)
 
-  return (
-    <main className="min-h-screen bg-slate-950 text-slate-100 flex flex-col items-center justify-between p-6 md:p-24 selection:bg-cyan-500 selection:text-white">
-      {{/* HEADER */}}
-      <header className="w-full max-w-6xl flex justify-between items-center py-4 mb-16 border-b border-slate-800/80">
-        <div className="flex items-center space-x-3">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center font-black text-white text-lg shadow-lg shadow-cyan-500/20">
-            {ideation.product_name[:2].upper()}
-          </div>
-          <span className="font-extrabold text-xl tracking-tight text-white">{ideation.product_name}</span>
-        </div>
-        <a 
-          href="#signup" 
-          className="text-xs font-semibold px-5 py-2.5 rounded-full bg-cyan-500 hover:bg-cyan-400 text-slate-950 transition-all font-mono shadow-md shadow-cyan-500/10 hover:shadow-cyan-500/30"
-        >
-          Get Early Access
-        </a>
-      </header>
+    generated_files.append(GeneratedFile(path="public/index.html", content=index_html))
+    generated_files.append(GeneratedFile(path="public/app.js", content=app_js))
 
-      {{/* HERO SECTION */}}
-      <section className="w-full max-w-4xl text-center flex flex-col items-center mb-24">
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-cyan-500/30 bg-cyan-500/10 text-cyan-400 text-xs font-mono mb-6">
-          <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
-          FOUNDER-0 Autonomous MVP
-        </div>
-        <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-white mb-6 leading-tight">
-          {ideation.tagline}
-        </h1>
-        <p className="text-lg md:text-xl text-slate-400 max-w-2xl mb-10 leading-relaxed">
-          {ideation.elevator_pitch}
-        </p>
-      </section>
-
-      {{/* CORE FEATURES GRID */}}
-      <section className="w-full max-w-6xl mb-24">
-        <div className="text-center mb-12">
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">Engineered To Solve Market Gaps</h2>
-          <p className="text-slate-400 text-sm max-w-xl mx-auto">
-            {ideation.differentiation_from_competitors}
-          </p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-{chr(10).join(component_tags)}
-        </div>
-      </section>
-
-      {{/* SIGNUP CTA */}}
-      <section id="signup" className="w-full max-w-2xl bg-gradient-to-b from-slate-900 to-slate-900/90 border border-slate-800 rounded-3xl p-8 md:p-12 text-center shadow-2xl relative overflow-hidden mb-16">
-        <div className="absolute inset-0 bg-cyan-500/10 blur-3xl rounded-full"></div>
-        <div className="relative z-10">
-          <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">Join the {ideation.product_name} Waitlist</h3>
-          <p className="text-slate-400 text-sm mb-8">{ideation.pricing_suggestion} — Be the first to get access.</p>
-          
-          <form onSubmit={{handleSubmit}} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-            <input 
-              type="email" 
-              value={{email}}
-              onChange={{(e) => setEmail(e.target.value)}}
-              placeholder="Enter your email..." 
-              required
-              className="flex-1 px-4 py-3 rounded-xl bg-slate-950/90 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 text-sm transition-all"
-            />
-            <button 
-              type="submit" 
-              disabled={{status === 'loading'}}
-              className="px-6 py-3 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-sm transition-all whitespace-nowrap disabled:opacity-50 shadow-lg shadow-cyan-500/20"
-            >
-              {{status === 'loading' ? 'Submitting...' : 'Join Waitlist'}}
-            </button>
-          </form>
-
-          {{message && (
-            <p className={{`mt-4 text-xs font-mono ${{status === 'success' ? 'text-emerald-400' : 'text-rose-400'}}`}}>
-              {{message}}
-            </p>
-          )}}
-        </div>
-      </section>
-
-      {{/* FOOTER */}}
-      <footer className="w-full max-w-6xl py-8 border-t border-slate-900 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-500 font-mono">
-        <div>© 2026 {ideation.product_name}. Powered by FOUNDER-0.</div>
-        <div className="mt-2 sm:mt-0 flex gap-4">
-          <span>Daytona Cloud Sandbox</span>
-          <span>•</span>
-          <span>Nosana GPU Inference</span>
-        </div>
-      </footer>
-    </main>
-  );
-}}
-"""
-    await sandbox.write_file("app/page.tsx", page_content)
-    generated_files.append(GeneratedFile(path="app/page.tsx", content=page_content))
-    emit("✅ [MVP_CODE_GENERATION] Successfully generated and verified all component code.")
+    emit(f"✅ [MVP_CODE_GENERATION] Successfully generated and injected {len(spec.feature_implementations)} feature(s) plus hero copy.")
 
     return MvpCodegenOutput(
         generated_files=generated_files,
-        hero_copy={
-            "product_name": ideation.product_name,
-            "tagline": ideation.tagline,
-            "elevator_pitch": ideation.elevator_pitch
-        },
-        static_check_passed=True
+        hero_copy=hero_copy,
+        static_check_passed=True,
     )

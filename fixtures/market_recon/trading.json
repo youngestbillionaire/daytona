@@ -1,0 +1,139 @@
+{
+  "category": "trading",
+  "keywords": [
+    "ai stock market predictor",
+    "algorithmic trading signal app",
+    "retail stock forecasting tool",
+    "automated portfolio analysis",
+    "stock price prediction model",
+    "trading signal alerts"
+  ],
+  "keyword_variations": [
+    [
+      "day trading signal app",
+      "swing trade alert tool",
+      "technical analysis automation",
+      "retail investor forecasting"
+    ],
+    [
+      "stock screener AI",
+      "market sentiment tracker",
+      "earnings prediction tool",
+      "portfolio risk analyzer"
+    ],
+    [
+      "crypto price prediction app",
+      "options flow tracker",
+      "backtesting platform",
+      "quant signal generator"
+    ]
+  ],
+  "market_size": "$14.2B retail trading & investing tools market",
+  "market_size_range": {
+    "min_billions": 11.5,
+    "max_billions": 16.8,
+    "label_template": "${value}B retail trading & investing tools market"
+  },
+  "competitors": [
+    {
+      "name": "TradingView",
+      "url": "https://www.tradingview.com",
+      "description": "Charting and social trading platform with technical indicators and community-built strategy scripts.",
+      "complaints": [
+        "Real-time data and most useful indicators are locked behind a paywall",
+        "Pine Script has a steep learning curve for anyone without a coding background",
+        "Alert system is unreliable during high-volatility market opens",
+        "No built-in predictive modeling, just charting and manual technical analysis"
+      ],
+      "source_queries": ["tradingview complaints reddit", "tradingview alternatives"]
+    },
+    {
+      "name": "Yahoo Finance",
+      "url": "https://finance.yahoo.com",
+      "description": "Free financial news, data, and portfolio tracking platform.",
+      "complaints": [
+        "Data is often delayed 15-20 minutes, useless for active trading decisions",
+        "App is cluttered with ads and unrelated news content",
+        "No predictive or forward-looking analysis, purely historical/reporting",
+        "Portfolio sync with brokerages breaks constantly"
+      ],
+      "source_queries": ["yahoo finance app complaints", "yahoo finance alternatives"]
+    },
+    {
+      "name": "Seeking Alpha",
+      "url": "https://seekingalpha.com",
+      "description": "Investment research platform combining crowd-sourced analysis with quant ratings.",
+      "complaints": [
+        "Aggressive paywall after the first article each month",
+        "Quant ratings are a black box with no visible methodology",
+        "Comment sections are dominated by low-quality, biased takes on individual stocks",
+        "Premium subscription renews automatically and is hard to cancel"
+      ],
+      "source_queries": ["seeking alpha reviews", "seeking alpha worth it reddit"]
+    },
+    {
+      "name": "Robinhood",
+      "url": "https://robinhood.com",
+      "description": "Commission-free retail trading and investing app.",
+      "complaints": [
+        "No real analytical or predictive tools, just a bare-bones order execution UI",
+        "Order flow practices and outage history during volatile days damaged user trust",
+        "Customer support is nearly impossible to reach for account issues",
+        "Gamified UI encourages impulsive trading rather than informed decisions"
+      ],
+      "source_queries": ["robinhood complaints", "robinhood vs alternatives reddit"]
+    }
+  ],
+  "competitor_variants": [
+    {
+      "name": "Webull",
+      "url": "https://www.webull.com",
+      "description": "Retail trading app with paper trading and basic technical indicators.",
+      "complaints": [
+        "Technical indicators are present but no predictive/forecasting layer at all",
+        "Customer support response times are frequently reported as slow"
+      ],
+      "source_queries": ["webull complaints reddit"]
+    },
+    {
+      "name": "Stock Rover",
+      "url": "https://www.stockrover.com",
+      "description": "Fundamental research and screening platform for long-term investors.",
+      "complaints": [
+        "Focused entirely on fundamentals, no short-term price prediction capability",
+        "Interface feels dated compared to newer trading tools"
+      ],
+      "source_queries": ["stock rover review"]
+    },
+    {
+      "name": "Trade Ideas",
+      "url": "https://www.trade-ideas.com",
+      "description": "AI-assisted stock scanning and alert tool for day traders.",
+      "complaints": [
+        "Very expensive for retail users at $100+/month",
+        "AI 'Holly' bot recommendations are opaque with no explainability"
+      ],
+      "source_queries": ["trade ideas ai review", "trade ideas pricing complaints"]
+    }
+  ],
+  "raw_complaint_pool": [
+    "Existing tools show you data but never actually tell you what's likely to happen next.",
+    "Real-time predictive signals are locked behind $50-100/month subscriptions.",
+    "Most 'AI stock prediction' apps are black boxes with zero explainability into why a signal fired.",
+    "Backtesting tools are separate paid products from the actual trading/alerts tools.",
+    "No unified tool combines news sentiment, technicals, and prediction confidence in one view.",
+    "Retail investors get last access to signals that institutional quant funds already priced in.",
+    "Mobile apps for active trading are laggy exactly when markets are moving fastest.",
+    "Free tiers are crippled to the point of being unusable for real decision-making."
+  ],
+  "complaint_pool_extended": [
+    "Predictive accuracy claims are never independently verifiable or backtested transparently.",
+    "Alerts fire too late to actually act on the underlying price movement.",
+    "Cross-asset coverage (stocks + crypto + options) is fragmented across multiple apps.",
+    "Onboarding assumes financial literacy most retail users don't have."
+  ],
+  "trend_signals": [
+    "Retail interest in AI-driven trading signal tools grew sharply through 2025-2026 amid broader retail AI adoption.",
+    "Regulatory scrutiny of 'AI stock prediction' marketing claims has increased, raising the bar for transparent methodology."
+  ]
+}

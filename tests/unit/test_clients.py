@@ -1,6 +1,6 @@
 import pytest
 from orchestrator.clients.daytona_client import daytona_client
-from orchestrator.clients.oxylabs_client import oxylabs_client
+from orchestrator.clients.web_search_client import web_search_client
 from orchestrator.clients.neo4j_client import neo4j_client
 from orchestrator.clients.nosana_client import nosana_client
 from orchestrator.clients.fallback_llm_client import fallback_llm_client, clean_json_response
@@ -30,7 +30,7 @@ async def test_daytona_client_local_sandbox():
     assert fetched.sandbox_id == sandbox.sandbox_id
 
 @pytest.mark.asyncio
-async def test_oxylabs_client_categories():
+async def test_web_search_client_categories():
     categories_prompts = [
         ("roommate rent bill split", "productivity"),
         ("ai tax invoice accounting", "fintech"),
@@ -39,13 +39,13 @@ async def test_oxylabs_client_categories():
         ("database postgres schema migration linter", "devtools"),
     ]
     for prompt, expected_category in categories_prompts:
-        fixture = oxylabs_client.get_fixture_data(prompt)
+        fixture = web_search_client.get_fixture_data(prompt)
         assert fixture["category"] == expected_category
         assert len(fixture["competitors"]) >= 4
         assert len(fixture["raw_complaint_pool"]) >= 8
 
     # Test search query mock
-    res = await oxylabs_client.search_query("test query")
+    res = await web_search_client.search_query("test query")
     assert "status" in res
 
 @pytest.mark.asyncio

@@ -217,7 +217,13 @@ class PipelineRunner:
                 stage_logs = []
                 log_cb = lambda msg: asyncio.create_task(self._emit_log(PipelineStage.MVP_CODE_GENERATION.value, msg, stage_logs))
                 ev = await self._record_stage_start(session, PipelineStage.MVP_CODE_GENERATION.value, {"sandbox_id": scaffold_out.sandbox_id})
-                codegen_out = await run_mvp_codegen(scaffold_out, ideation_out, spec_out, log=log_cb)
+                codegen_out = await run_mvp_codegen(
+                    spec_out, scaffold_out,
+                    idea=self.idea,
+                    product_name=ideation_out.product_name,
+                    tagline=ideation_out.tagline,
+                    log=log_cb
+                )
                 await self._record_stage_success(session, ev, codegen_out.model_dump(mode='json'), stage_logs)
 
                 # Stage 11: MVP_BUILD_AND_TEST

@@ -66,17 +66,21 @@ async def run_whitespace_analysis(
 
     # Select high-impact structural market void dynamically
     category = recon_output.category
-    category_gaps = GAP_VARIATIONS.get(category, [
-        "Incumbents rely on manual user friction and legacy architectures, leaving an unaddressed whitespace for autonomous execution, cryptographic trust, and zero-overhead resolution."
-    ])
-    primary_gap = random.choice(category_gaps)
+    if category not in GAP_VARIATIONS and recon_output.raw_complaint_pool:
+        top_complaint = recon_output.raw_complaint_pool[0]
+        primary_gap = f"Incumbents suffer from fundamental structural limitations: '{top_complaint}'. The core market whitespace is an autonomous, modern architecture eliminating this friction entirely."
+    else:
+        category_gaps = GAP_VARIATIONS.get(category, [
+            "Incumbents rely on manual user friction and legacy architectures, leaving an unaddressed whitespace for autonomous execution, cryptographic trust, and zero-overhead resolution."
+        ])
+        primary_gap = random.choice(category_gaps)
 
     coverage_map = {
-        "Manual Tracking & Spreadsheets": min(len(recon_output.competitors), 4),
-        "Basic Payment Requests & Notifications": min(len(recon_output.competitors), 3),
-        "Automated Autonomous Settlement": 0,
-        "Psychological Enforcement Protocol": 0,
-        "Real-Time Blast Radius Verification": 0
+        f"Legacy {category.capitalize()} Incumbent Tools": min(len(recon_output.competitors), 4),
+        "Passive Manual Management": min(len(recon_output.competitors), 3),
+        "Autonomous Friction Elimination": 0,
+        "Real-Time State Verification": 0,
+        "Zero-Overhead User Experience": 0
     }
 
     emit(f"🎯 [WHITESPACE_ANALYSIS] Identified Primary Structural Gap: '{primary_gap}'")

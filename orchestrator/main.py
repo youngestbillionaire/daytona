@@ -164,69 +164,55 @@ async def replay_run(run_id: str, db: AsyncSession = Depends(get_db)):
 
 @app.get("/api/preview/{sandbox_id}", response_class=HTMLResponse)
 async def preview_sandbox(sandbox_id: str):
-    """Renders live preview simulation for the sandbox."""
-    return HTMLResponse(f"""<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Live MVP Preview | Daytona Sandbox {sandbox_id}</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
-  <style>body {{ font-family: 'Plus Jakarta Sans', sans-serif; }}</style>
-</head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col items-center justify-between p-6 md:p-16">
-  <header class="w-full max-w-5xl flex justify-between items-center py-4 mb-12 border-b border-slate-800">
-    <div class="flex items-center space-x-3">
-      <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center font-black text-white text-lg shadow-lg shadow-cyan-500/20">
-        MVP
-      </div>
-      <span class="font-extrabold text-xl tracking-tight text-white">Live Daytona Sandbox</span>
-    </div>
-    <div class="flex items-center gap-2">
-      <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-      <span class="text-xs font-mono text-emerald-400 bg-emerald-950/60 px-3 py-1.5 rounded-full border border-emerald-800">
-        Port 3000 Active
-      </span>
-    </div>
-  </header>
+    """
+    Serves the REAL generated MVP for a sandbox: reads public/index.html out of
+    that sandbox's local mirror directory (artifacts/sandboxes/{id}/public/)
+    and returns it as-is, with a <base> tag injected so its relative asset
+    links (style.css, app.js) resolve correctly under this proxy path.
 
-  <section class="w-full max-w-3xl text-center flex flex-col items-center mb-16">
-    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-cyan-500/30 bg-cyan-500/10 text-cyan-400 text-xs font-mono mb-6">
-      ⚡ FOUNDER-0 Autonomous TypeScript Stack
-    </div>
-    <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-white mb-6">
-      Production-Ready MVP Shipped
-    </h1>
-    <p class="text-slate-400 text-base md:text-lg leading-relaxed max-w-xl mb-8">
-      This live prototype was synthesized, scaffolded in a Daytona sandbox, compiled, self-healed, and deployed automatically by FOUNDER-0.
-    </p>
-  </section>
+    This only serves what the pipeline actually generated. If the sandbox
+    hasn't produced an index.html yet (pipeline still running, or it's a
+    live Daytona sandbox whose real preview URL bypasses this route
+    entirely), it returns an honest "not ready" page instead of fake content.
+    """
+    index_path = Path("artifacts") / "sandboxes" / sandbox_id / "public" / "index.html"
 
-  <section class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
-    <div class="p-6 rounded-2xl border border-slate-800 bg-slate-900/60 backdrop-blur-sm shadow-xl">
-      <div class="text-cyan-400 text-2xl mb-3">⚡</div>
-      <h3 class="text-lg font-bold text-white mb-2">Automated Core</h3>
-      <p class="text-slate-400 text-xs leading-relaxed">Directly eliminates market friction points identified during initial competitive analysis.</p>
-    </div>
-    <div class="p-6 rounded-2xl border border-slate-800 bg-slate-900/60 backdrop-blur-sm shadow-xl">
-      <div class="text-cyan-400 text-2xl mb-3">🛡️</div>
-      <h3 class="text-lg font-bold text-white mb-2">Verifiable State</h3>
-      <p class="text-slate-400 text-xs leading-relaxed">Runs in an isolated sandbox with instant state checkpoints and live SQLite integration.</p>
-    </div>
-    <div class="p-6 rounded-2xl border border-slate-800 bg-slate-900/60 backdrop-blur-sm shadow-xl">
-      <div class="text-cyan-400 text-2xl mb-3">🚀</div>
-      <h3 class="text-lg font-bold text-white mb-2">Self-Healing Code</h3>
-      <p class="text-slate-400 text-xs leading-relaxed">Bounded repair loops automatically isolate errors to ensure continuous uptime.</p>
-    </div>
-  </section>
+    if not index_path.exists():
+        return HTMLResponse(
+            "<html><body style='font-family: sans-serif; padding: 3rem; "
+            "background:#0b0f19; color:#e5e7eb;'>"
+            "<h2>MVP not generated yet</h2>"
+            "<p>This sandbox has no generated <code>public/index.html</code> on disk yet. "
+            "Either the pipeline hasn't reached MVP_CODE_GENERATION for this run, "
+            "or this sandbox is a live Daytona sandbox whose real preview URL "
+            "should be used instead of this local proxy.</p>"
+            "</body></html>",
+            status_code=404
+        )
 
-  <footer class="w-full max-w-5xl py-6 border-t border-slate-900 flex justify-between items-center text-xs text-slate-500 font-mono">
-    <div>Daytona Container: <span class="text-cyan-400">{sandbox_id}</span></div>
-    <div>FOUNDER-0 Autonomous Infrastructure</div>
-  </footer>
-</body>
-</html>""")
+    html = index_path.read_text(encoding="utf-8")
+    base_tag = f'<base href="/api/preview/{sandbox_id}/">'
+    if "<head>" in html:
+        html = html.replace("<head>", f"<head>\n  {base_tag}", 1)
+    else:
+        html = base_tag + html
+
+    return HTMLResponse(html)
+
+
+@app.get("/api/preview/{sandbox_id}/{file_path:path}")
+async def preview_sandbox_asset(sandbox_id: str, file_path: str):
+    """Serves a real static asset (style.css, app.js, etc.) generated for this sandbox."""
+    base_dir = (Path("artifacts") / "sandboxes" / sandbox_id / "public").resolve()
+    target = (base_dir / file_path).resolve()
+
+    if not str(target).startswith(str(base_dir)):
+        raise HTTPException(status_code=403, detail="Forbidden")
+    if not target.exists() or not target.is_file():
+        raise HTTPException(status_code=404, detail="Asset not found")
+
+    return FileResponse(target)
+
 
 # ==========================================
 # WebSocket Streaming

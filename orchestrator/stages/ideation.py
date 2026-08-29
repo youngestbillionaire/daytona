@@ -154,23 +154,166 @@ MOCK_IDEAS = {
 }
 
 
+DYNAMIC_PALETTES = [
+    ["#06b6d4", "#0b192c", "#38bdf8"],  # Electric Cyan / Sky
+    ["#10b981", "#022c22", "#34d399"],  # Emerald Mint / Forest
+    ["#8b5cf6", "#1e1b4b", "#c084fc"],  # Hyper Violet / Amethyst
+    ["#f59e0b", "#3b1a03", "#fbbf24"],  # Sunset Amber / Gold
+    ["#f43f5e", "#3f0713", "#fda4af"],  # Neon Rose / Crimson
+    ["#6366f1", "#131633", "#818cf8"],  # Royal Indigo / Ultramarine
+    ["#14b8a6", "#032824", "#2dd4bf"],  # Cyber Teal / Jade
+    ["#f97316", "#371505", "#fb923c"],  # Solar Orange / Blaze
+    ["#3b82f6", "#071630", "#93c5fd"],  # Electric Cobalt / Ocean
+    ["#d946ef", "#3b0764", "#f0abfc"],  # Cyber Fuchsia / Magenta
+]
+
+def _get_dynamic_palette(idea_text: str) -> list:
+    """Generate a unique aesthetic theme palette deterministically per product idea."""
+    idx = sum(ord(c) for c in idea_text) % len(DYNAMIC_PALETTES)
+    return DYNAMIC_PALETTES[idx]
+
 def _select_mock_idea(idea: str, whitespace: WhitespaceAnalysisOutput) -> dict:
     """Select the best mock idea based on keyword matching against the user's input."""
     q = idea.lower()
+    selected = None
 
-    if any(w in q for w in ["roommate", "bill", "split", "chore", "household", "rent", "shared"]):
-        return MOCK_IDEAS["roommate"]
+    if any(w in q for w in ["pet", "dog", "cat", "puppy", "kitten", "animal"]):
+        selected = {
+            "product_name": "PawMatch",
+            "tagline": "The Verified Social Network for Dog Playdates & Pet Compatibility",
+            "one_line_pitch": "PawMatch eliminates aggressive dog park encounters and flakey pet owners with vaccine-verified temperament matching and scheduled neighborhood playdates.",
+            "elevator_pitch": "68 million households own pets, but finding safe playdates and compatible socialization is pure guesswork. Pet owners suffer through aggressive dogs at public parks, flaky meetup groups, and zero verification. PawMatch introduces temperament-calibrated matching where verified vaccination records, energy levels, and play styles ensure zero-conflict socialization. We don't just connect pet owners — we build safe, trusted local animal communities.",
+            "core_features": [
+                {"name": "Temperament & Energy Matching", "description": "Proprietary behavioral algorithm pairs dogs by size, play style (wrestler, chaser, gentle), and energy output to prevent aggression.", "user_value": "Zero dog fights, zero anxiety at playdates."},
+                {"name": "Verified Vet & Vaccine Pass", "description": "Automated OCR verifies rabies and DHPP records directly from vet receipts before granting profile activation.", "user_value": "100% guaranteed healthy, disease-free playmates."},
+                {"name": "Verified Park Playdate Escrow", "description": "Stake-backed attendance holds that unlock treat rewards at local partnered pet boutiques when meetups happen.", "user_value": "No more showing up to empty parks."}
+            ],
+            "target_user_persona": {
+                "name": "The Protective Pet Parent",
+                "description": "24-40 year old urban/suburban dog owner who treats their pet like family and wants safe, high-quality socialization.",
+                "pain_points": ["Traumatized by aggressive dogs at public dog parks", "Friends' dogs don't match energy level", "Spends $100s on toys and treats for lonely pets"]
+            },
+            "monetization_model": "Free for basic matching. PawMatch Gold ($8.99/mo) unlocks unlimited playdates, verified breed badges, and 15% discounts at 4,000+ local pet supply partners.",
+            "pricing_suggestion": "Free Starter / $8.99/mo PawMatch Gold / $19.99/mo Multi-Pet VIP",
+            "differentiation_from_competitors": "BarkBuddy and Petzbe are passive image feeds. PawMatch is an active temperament verification and safe meetup protocol.",
+            "contrarian_insight": "Everyone assumes pet socialization is a photo-sharing problem. It is actually a safety and temperament compatibility problem. Owners care 10x more about avoiding dog fights than looking at cute pictures.",
+            "technical_moat": "Verified veterinary record graph and behavioral temperament calibration dataset across 200+ dog breeds.",
+            "tam_estimate": "$6.4B — 68M US pet-owning households × $94/year willingness to spend on pet wellness and socialization",
+            "go_to_market_wedge": "Viral adoption through local dog agility parks, veterinary clinics, and rescue shelters with 3.4x referral loops.",
+            "psychological_hook": "Parental protection instinct — preventing traumatic animal encounters is an urgent, non-negotiable priority.",
+            "ten_x_factor": "Transforms risky public dog park roulette into guaranteed peaceful, joyful play sessions.",
+            "brand_tone": "warm, trusted, playful, safety-first",
+            "suggested_color_palette": ["#f97316", "#371505", "#fb923c"],
+            "rejected_names": ["TinderDogs", "BarkForce", "PetSwipe"],
+            "rejected_names_reasoning": ["Sounds like a gimmick", "Too aggressive sounding", "Implies human dating rather than pet safety"]
+        }
+    elif any(w in q for w in ["dating", "tinder", "match", "romance", "single"]):
+        selected = {
+            "product_name": "TrueSpark",
+            "tagline": "The High-Intent Dating Network That Eliminates Endless Swiping & Ghosting",
+            "one_line_pitch": "TrueSpark replaces swipe fatigue with commitment-backed micro-dates and zero-ghosting attendance bonds.",
+            "elevator_pitch": "Modern dating apps optimize for addiction and dopamine, resulting in an 85% ghosting rate and severe burnout. TrueSpark flips the model: users match on shared values, commit a small refundable bond to coffee dates, and receive prompt mutual feedback.",
+            "core_features": [
+                {"name": "Commitment-Bonded Dates", "description": "Refundable micro-deposits guarantee both parties show up on time.", "user_value": "Zero ghosting, zero wasted evenings."},
+                {"name": "Values Alignment Engine", "description": "Matches based on lifestyle non-negotiables rather than superficial photo carousels.", "user_value": "High chemistry from date one."},
+                {"name": "Safe Public Venue Coordinator", "description": "Auto-reserves verified partner cafes with exclusive member tables.", "user_value": "Effortless date logistics."}
+            ],
+            "target_user_persona": {
+                "name": "The Burned-Out Dater",
+                "description": "25-38 year old professional seeking genuine relationships after years of superficial dating app exhaustion.",
+                "pain_points": ["Ghosted on 4 out of 5 matches", "Tired of endless dry texting", "Wants high-intent, emotionally mature partners"]
+            },
+            "monetization_model": "Free entry. TrueSpark Premium ($14.99/mo) unlocks priority invites, verified relationship goals, and partner discounts.",
+            "pricing_suggestion": "Free / $14.99/mo Premium / $29.99/mo VIP Concierge",
+            "differentiation_from_competitors": "Tinder and Hinge profit from keeping you single. TrueSpark profits from getting you off the app into real life.",
+            "contrarian_insight": "Dating apps fail because they optimize for engagement time instead of relationship formation. Adding real friction (skin in the game) massively increases success rates.",
+            "technical_moat": "Reputation-commitment graph with mutual verification scores.",
+            "tam_estimate": "$8.2B global online dating market",
+            "go_to_market_wedge": "College alumni networks and local professional communities.",
+            "psychological_hook": "Dignity and respect — eliminates the humiliation of being stood up.",
+            "ten_x_factor": "Moves matches from screen to in-person coffee in under 48 hours.",
+            "brand_tone": "authentic, high-intent, respectful",
+            "suggested_color_palette": ["#f43f5e", "#3f0713", "#fda4af"],
+            "rejected_names": ["SwipeMore", "QuickDate", "MeetFast"],
+            "rejected_names_reasoning": ["Promotes superficial behavior", "Sounds rushed", "Lacks emotional resonance"]
+        }
+    elif any(w in q for w in ["game", "gaming", "pokemon", "ar", "vr", "metaverse"]):
+        selected = {
+            "product_name": "RealmQuest",
+            "tagline": "The Decentralized Location-Based AR Realm That Turns Any City Into An RPG",
+            "one_line_pitch": "RealmQuest bridges real-world exploration with tactical co-op AR battles, eliminating rural dead zones through player-anchored territory nodes.",
+            "elevator_pitch": "Location-based games like Pokémon GO alienate millions of suburban and rural players while relying on brainless tap-mashing battles. RealmQuest introduces player-generated localized territories, deep tactical combat, and battery-optimized AR tracking.",
+            "core_features": [
+                {"name": "Decentralized Territory Nodes", "description": "Players anchor custom exploration beacons anywhere in the world, ensuring rich gameplay even in rural towns.", "user_value": "Play anywhere, not just in downtown Tokyo or NYC."},
+                {"name": "Tactical Real-Time Co-Op", "description": "Multiplayer boss raids requiring real positional positioning and class synergies.", "user_value": "Deep engaging combat, not mindless tapping."},
+                {"name": "Ultra-Low Power AR Engine", "description": "Optimized spatial meshing consuming 70% less battery and zero device overheating.", "user_value": "Hours of continuous gameplay on a single charge."}
+            ],
+            "target_user_persona": {
+                "name": "The Active Gamer",
+                "description": "18-35 year old gamer who loves walking and outdoor activities but is frustrated by corporate AR game limitations.",
+                "pain_points": ["No spawns in their home area", "Battery dies in 45 minutes", "Tired of pay-to-win microtransactions"]
+            },
+            "monetization_model": "Free to play with cosmetic battle passes ($7.99/season) and guild realm customization.",
+            "pricing_suggestion": "Free / $7.99 Season Pass / $19.99 Guild Champion",
+            "differentiation_from_competitors": "Niantic controls all points of interest centrally. RealmQuest is player-curated, tactical, and battery-friendly.",
+            "contrarian_insight": "AR games don't need real-world sponsor landmarks. They need player-generated narrative significance and deep tactical combat.",
+            "technical_moat": "Spatial mesh optimization protocols and decentralized POI validation graphs.",
+            "tam_estimate": "$22.4B mobile gaming & AR exploration market",
+            "go_to_market_wedge": "Gaming subreddits, university campus walking clubs, and Discord gaming communities.",
+            "psychological_hook": "Curiosity and exploration — turning everyday walks into epic quests.",
+            "ten_x_factor": "10x deeper combat with 1/3 the battery consumption.",
+            "brand_tone": "epic, adventurous, vibrant",
+            "suggested_color_palette": ["#8b5cf6", "#1e1b4b", "#c084fc"],
+            "rejected_names": ["GoClone", "WalkMon", "CityRaid"],
+            "rejected_names_reasoning": ["Sounds like a cheap knockoff", "Too generic", "Implies combat only"]
+        }
+    elif any(w in q for w in ["roommate", "bill", "split", "chore", "household", "rent", "shared"]):
+        selected = dict(MOCK_IDEAS["roommate"])
     elif any(w in q for w in ["freelance", "tax", "account", "invoice", "bookkeep", "receipt", "deduction"]):
-        return MOCK_IDEAS["fintech"]
+        selected = dict(MOCK_IDEAS["fintech"])
     elif any(w in q for w in ["meetup", "hobby", "friend", "community", "social", "lonely", "ghost", "event"]):
-        return MOCK_IDEAS["social"]
+        selected = dict(MOCK_IDEAS["social"])
     elif any(w in q for w in ["sleep", "health", "caffeine", "circadian", "fitness", "recovery", "diet"]):
-        return MOCK_IDEAS["health"]
+        selected = dict(MOCK_IDEAS["health"])
     elif any(w in q for w in ["schema", "database", "migration", "postgres", "sql", "deploy", "devops"]):
-        return MOCK_IDEAS["devtools"]
+        selected = dict(MOCK_IDEAS["devtools"])
+    else:
+        # Generate custom fallback tailored from prompt keywords
+        words = [w.capitalize() for w in idea.split() if len(w) > 3]
+        base_name = f"{words[0]}Hub" if words else "VentureOS"
+        selected = {
+            "product_name": base_name,
+            "tagline": f"The Autonomous Platform Built For {idea[:35]}",
+            "one_line_pitch": f"An intelligent, zero-friction solution that solves: {idea}",
+            "elevator_pitch": f"Legacy tools force users to perform manual work. {base_name} eliminates manual friction by deploying verified automated workflows tailored for {idea}.",
+            "core_features": [
+                {"name": "Autonomous Core Engine", "description": f"Auto-executes core workflows for {idea[:30]} with zero manual overhead.", "user_value": "Saves 10+ hours per week."},
+                {"name": "Verifiable Trust Network", "description": "Maintains instant state verification and mutual accountability.", "user_value": "Complete peace of mind."},
+                {"name": "Zero-Friction Collaboration", "description": "Seamless real-time synchronization across all participants.", "user_value": "Zero friction, zero drop-off."}
+            ],
+            "target_user_persona": {
+                "name": "The Modern Enthusiast",
+                "description": f"Users seeking seamless execution in the {idea[:25]} space.",
+                "pain_points": [f"Wastes hours on manual steps in {idea[:25]}", "Struggles with outdated tools", "Needs instant reliability"]
+            },
+            "monetization_model": "Freemium ($0 Starter / $9.99/mo Pro / $29.99/mo Power)",
+            "pricing_suggestion": "Free Starter / $9.99/mo Pro / $29.99/mo VIP",
+            "differentiation_from_competitors": "Incumbents require manual configuration; we provide autonomous verified resolution.",
+            "contrarian_insight": "Everyone assumes more manual controls are needed. The ground truth is that users want the task automated away completely.",
+            "technical_moat": "Compounding network effect with deep behavioral calibration.",
+            "tam_estimate": "$4.5B serviceable addressable market",
+            "go_to_market_wedge": "Direct viral adoption via niche enthusiast communities.",
+            "psychological_hook": "Loss aversion — users eliminate hours of lost time and frustration immediately.",
+            "ten_x_factor": "Makes the problem disappear rather than offering minor speedups.",
+            "brand_tone": "innovative, energetic, frictionless",
+            "suggested_color_palette": _get_dynamic_palette(idea),
+            "rejected_names": ["LegacyTool", "OldWay", "ManualApp"],
+            "rejected_names_reasoning": ["Too passive", "Lacks energy", "Generic naming"]
+        }
 
-    # Default: select the productivity/roommate idea
-    return MOCK_IDEAS["roommate"]
+    # Ensure distinct dynamic palette
+    selected["suggested_color_palette"] = _get_dynamic_palette(idea)
+    return selected
 
 
 async def run_ideation(
@@ -188,7 +331,7 @@ async def run_ideation(
         if log:
             log(msg)
 
-    emit("💡 [IDEATION] Synthesizing world-class product concept with First Principles Innovation Framework...")
+    emit("💡 [IDEATION] Synthesizing world-class product concept with First Principles Innovation Framework via Nosana...")
 
     prompt = f"""
 You are FOUNDER-0's core ideation intelligence — the most sophisticated venture synthesis engine ever built.

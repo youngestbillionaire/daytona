@@ -11,12 +11,8 @@ class Settings(BaseSettings):
     
     # Daytona API
     DAYTONA_API_KEY: Optional[str] = None
-    DAYTONA_SERVER_URL: str = "https://app.daytona.io/api"
+    DAYTONA_API_URL: str = "https://app.daytona.io/api"
     DAYTONA_TARGET: str = "us"
-    
-    # Oxylabs
-    OXYLABS_USERNAME: Optional[str] = None
-    OXYLABS_PASSWORD: Optional[str] = None
     
     # Neo4j
     NEO4J_URI: str = "bolt://localhost:7687"

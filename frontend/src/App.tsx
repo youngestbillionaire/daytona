@@ -94,6 +94,13 @@ export default function App() {
             .then(tData => {
               if (tData.stages) setStages(tData.stages);
             });
+          // Refetch run details too, so fields like product_name (set as soon as
+          // the IDEATION stage finishes) show up immediately instead of being
+          // stuck on "Synthesizing Concept..." until the whole run completes.
+          fetch(`/api/runs/${activeRunId}`)
+            .then(res => res.json())
+            .then(rData => setActiveRun(rData))
+            .catch(console.error);
         } else if (eventType === 'graph_update') {
           setGraphData(data);
         } else if (eventType === 'run_completed' || eventType === 'run_failed') {

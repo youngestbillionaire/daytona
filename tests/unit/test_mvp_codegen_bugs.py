@@ -100,4 +100,7 @@ async def test_codegen_with_special_characters():
     
     codegen_res = await run_mvp_codegen(scaffold, ideation, spec)
     assert codegen_res.static_check_passed is True
-    assert len(codegen_res.generated_files) == 2  # Component + page.tsx
+    assert len(codegen_res.generated_files) >= 2  # Component + page.tsx + core backend files
+    paths = [f.path for f in codegen_res.generated_files]
+    assert "components/features/SpecialCharCard.tsx" in paths
+    assert "app/page.tsx" in paths

@@ -211,7 +211,7 @@ class SpecGenerationOutput(BaseModel):
 class MvpScaffoldOutput(BaseModel):
     sandbox_id: str
     workspace_path: str
-    template_used: str = "nextjs-sqlite-starter"
+    template_used: str = "vanilla-static-starter"
     install_exit_code: int = 0
     install_logs: str = ""
 

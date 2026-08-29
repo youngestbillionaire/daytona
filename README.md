@@ -1,226 +1,148 @@
-# 🚀 FOUNDER-0
+# FOUNDER-0
 
-> **Turn any 1-sentence startup idea into a real, running MVP, knowledge graph, pitch deck, and pitch script — completely automatically in under 60 seconds.**
+**An autonomous agent pipeline that takes a one-sentence startup idea and ships a real, running product.**
 
-[![Tests](https://img.shields.io/badge/tests-36%20passed%20%E2%9C%93-emerald)](https://github.com/youngestbillionaire/daytona)
-[![Python](https://img.shields.io/badge/python-3.11%2B-blue)](https://python.org)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.110%2B-teal)](https://fastapi.tiangolo.com)
-[![Next.js](https://img.shields.io/badge/Next.js-14%20App%20Router-black)](https://nextjs.org)
-[![Daytona](https://img.shields.io/badge/Daytona-Cloud%20Sandboxes-indigo)](https://daytona.io)
-[![Zero-Keys Ready](https://img.shields.io/badge/zero--keys%20ready-100%25-green)](#-zero-keys-mode-instant-start)
+Give it an idea. It researches the competitive landscape, builds a knowledge graph of the market gap, synthesizes a product concept, writes and deploys a working MVP inside an isolated cloud sandbox, and hands back a live URL — with every step's real output visible, not simulated.
+
+Built for the Daytona HackSprint Singapore.
 
 ---
 
-## 🐣 What is this? (Explained like you're 5)
+## What it actually does
 
-Imagine you have an idea for an app, like:
-> *"An app where roommates split bills and chores automatically without fighting."*
+Most "AI builds a startup" demos are a single LLM call dressed up in a nice UI. FOUNDER-0 is a 13-stage pipeline where each stage does one real, verifiable thing and hands structured output to the next:
 
-Normally, you would need:
-1. 🔍 A market researcher to check competitors
-2. 🧠 A startup advisor to find the secret angle (contrarian truth)
-3. 📐 A product manager to write the feature specs
-4. 💻 A software engineer to code the website in a sandbox
-5. 📊 A designer to make an 8-slide animated pitch deck
-6. 🎙️ A founder to write the investor speech
+| Stage | What happens |
+|---|---|
+| **Market Recon** | Classifies the idea into a market category and surfaces real named competitors, live-search-augmented where possible |
+| **Competitor Enrichment** | Best-effort live fetch of each competitor's site for real metadata |
+| **Opportunity Graph** | Ingests competitors, features, and complaints into a live Neo4j knowledge graph |
+| **Whitespace Analysis** | Queries the graph to find the specific, underserved gap in the market |
+| **Ideation** | An LLM (hosted on **Nosana's decentralized GPU network**) synthesizes a product name, tagline, pitch, and feature set grounded in the actual whitespace found |
+| **Spec Generation** | Turns the product concept into a concrete technical feature spec |
+| **MVP Scaffold** | Provisions a real, isolated **Daytona sandbox** and stages a zero-dependency starter template |
+| **MVP Code Generation** | The Nosana LLM generates every piece of the MVP's actual content — hero copy and each feature's HTML + interactive JS — nothing here is a hardcoded template |
+| **Build & Test** | Runs a real syntax check and a real HTTP health check against the server running inside the sandbox |
+| **Self-Heal Loop** | If something's broken, feeds the real error back to the LLM for a bounded, targeted repair — and degrades honestly to a working baseline if repair doesn't succeed, rather than faking a pass |
+| **Deploy Preview** | Polls the sandbox with real HTTP requests until the MVP is confirmed reachable, then exposes it |
+| **Screenshot + Report** | Captures the live app and assembles a pitch-ready summary of the whole run |
 
-**FOUNDER-0 does all 6 of those things automatically!** You give it 1 sentence, sit back with some popcorn, and watch the whole company get built live on your screen.
+The MVP itself is deliberately boring on purpose: plain HTML, CSS, and vanilla JavaScript served by a zero-dependency Node server. No build step, no TypeScript compiler, no framework — because the one thing an AI-generated app cannot afford to do live in front of judges is fail a build for a reason that has nothing to do with the actual product.
 
----
+### Why this is a real integration, not a demo skin
 
-## ⚡ Super Easy Quickstart (Takes 30 Seconds!)
-
-You don't need any API keys or paid accounts to try this. It works out of the box!
-
-### Step 1: Install Python packages
-Open your terminal (PowerShell, Command Prompt, or Terminal) and run:
-```bash
-pip install -r requirements.txt
-```
-
-### Step 2: Start the Engine Backend
-```bash
-python -m orchestrator.main
-```
-*(Your backend is now running at `http://localhost:8000`)* 🚀
-
-### Step 3: Start the Web Dashboard
-Open a **new** terminal window and run:
-```bash
-cd frontend
-npm install
-npm run dev
-```
-*(Open your browser to `http://localhost:5173`)* ✨
-
-That's it! Type any idea and click **Launch Pipeline**!
+- **Daytona** isn't a wrapper around `subprocess.run` — it's the official `daytona` Python SDK, provisioning a real isolated sandbox with its own filesystem and process execution, with a real public preview URL. A failed command comes back as a failed command; nothing here silently reports success it didn't earn.
+- **Nosana** generates the actual product content live — the hero copy and every feature's markup/behavior are model output, not a filled-in template.
+- **Neo4j** holds a real, queryable graph that the whitespace analysis stage runs actual Cypher against to find the market gap — it's not decoration.
+- Every stage is independently logged, timestamped, and streamed to the dashboard in real time, so a judge (or you, debugging at 3am) can see exactly what happened and why.
 
 ---
 
-## 🎮 3 Ways to Run FOUNDER-0
+## Quickstart
 
-### Option 1: 🖥️ The Beautiful Web Dashboard (Recommended)
-Open `http://localhost:5173` in your browser.
-1. Type your idea into the box (e.g. *"An AI accountant for freelancers"*).
-2. Click **Synthesize Venture**.
-3. Watch the live 15-stage stepper, stream logs in real time, view the interactive 2D Opportunity Graph, test the live running MVP iframe, and flip through the 8-slide animated pitch deck!
-
----
-
-### Option 2: 💻 The Terminal CLI (For Hackers)
-In your terminal, you can trigger a run and watch logs stream directly:
+### 1. Install dependencies
 
 ```bash
-# 1. Run a new startup idea
-python cli/founder0.py run "a sleep tracker that calculates exact caffeine cutoffs"
-
-# 2. View all previous runs
-python cli/founder0.py list
-
-# 3. Check status & timeline of a specific run
-python cli/founder0.py status <run_id>
-
-# 4. Replay an existing idea
-python cli/founder0.py replay <run_id>
+pip install -r requirements.txt --break-system-packages
+cd frontend && npm install && cd ..
 ```
 
----
+### 2. Configure your `.env`
 
-### Option 3: 🌐 The REST API (For Developers)
-```bash
-# Trigger a new run via curl
-curl -X POST http://localhost:8000/api/runs \
-  -H "Content-Type: application/json" \
-  -d '{"idea": "an AI database migration firewall that stops production table locks"}'
+Copy the provided `.env` (already present) or start from scratch:
 
-# Get all runs
-curl http://localhost:8000/api/runs
+```dotenv
+MOCK_MODE=true                # true = zero external accounts needed, full offline dry-run
+DATABASE_URL=sqlite+aiosqlite:///./founder0.db
 
-# Get the timeline & artifacts of a run
-curl http://localhost:8000/api/runs/<run_id>/timeline
+DAYTONA_API_KEY=
+DAYTONA_API_URL=https://app.daytona.io/api
+DAYTONA_TARGET=us
+
+NEO4J_URI=bolt://localhost:7687
+NEO4J_USER=neo4j
+NEO4J_PASSWORD=password123
+
+NOSANA_API_KEY=
+NOSANA_BASE_URL=https://api.nosana.io/v1
+NOSANA_MODEL_ID=deepseek-coder
+
+FALLBACK_LLM_PROVIDER=anthropic
+FALLBACK_LLM_API_KEY=
 ```
 
----
+**Run with `MOCK_MODE=true` first.** Every stage has a realistic offline fallback, so you can verify the whole pipeline works before spending a single API call. Flip it to `false` only once you've confirmed a clean mock run.
 
-## 🧠 What Happens Under the Hood? (The 15 Superpowers)
-
-```mermaid
-graph TD
-    A[1. IDEA_RECEIVED] --> B[2. MARKET_RECON]
-    B --> C[3. COMPETITOR_ENRICHMENT]
-    C --> D[4. OPPORTUNITY_GRAPH]
-    D --> E[5. WHITESPACE_ANALYSIS]
-    E --> F[6. IDEATION]
-    F --> G[7. NAMING_AND_BRANDING]
-    G --> H[8. SPEC_GENERATION]
-    H --> I[9. MVP_SCAFFOLD]
-    I --> J[10. MVP_CODE_GENERATION]
-    J --> K[11. MVP_BUILD_AND_TEST]
-    K --> L[12. MVP_SELF_HEAL_LOOP]
-    L --> M[13. MVP_DEPLOY_PREVIEW]
-    M --> N[14. SCREENSHOT_CAPTURE]
-    N --> O[15. DECK_GENERATION]
-    O --> P[16. NARRATION_GENERATION]
-    P --> Q[🎉 COMPLETE]
-```
-
-1. **`IDEA_RECEIVED`** — Validates and logs your one-sentence idea.
-2. **`MARKET_RECON`** — Discovers real competitors and scrapes authentic user complaints from Reddit and Hacker News.
-3. **`COMPETITOR_ENRICHMENT`** — Analyzes pricing tiers, feature matrices, and competitor weak spots.
-4. **`OPPORTUNITY_GRAPH`** — Constructs a Neo4j knowledge graph connecting competitors to unaddressed complaints.
-5. **`WHITESPACE_ANALYSIS`** — Runs Cypher queries to pinpoint the #1 market void incumbents ignore.
-6. **`IDEATION`** — Uses First-Principles thinking (Peter Thiel zero-to-one test) to discover a contrarian insight and 10x value moat.
-7. **`NAMING_AND_BRANDING`** — Generates punchy brand names, taglines, tone, and HSL color palettes.
-8. **`SPEC_GENERATION`** — Generates engineering architecture (Next.js pages, SQLite schemas, TypeScript components).
-9. **`MVP_SCAFFOLD`** — Spins up a secure cloud workspace in a **Daytona Sandbox**.
-10. **`MVP_CODE_GENERATION`** — Writes React components, API routes, and landing pages.
-11. **`MVP_BUILD_AND_TEST`** — Runs `npm install` and `npm run build` with smoke tests.
-12. **`MVP_SELF_HEAL_LOOP`** — Automatically diagnoses build errors, repairs broken code, and isolates failing features.
-13. **`MVP_DEPLOY_PREVIEW`** — Launches the running web application on port 3000.
-14. **`SCREENSHOT_CAPTURE`** — Captures a high-resolution preview screenshot of the live MVP.
-15. **`DECK_GENERATION`** — Renders an **8-slide cinematic pitch deck** with 3D transitions, particle animations, loss aversion framing, and live scannable QR code!
-16. **`NARRATION_GENERATION`** — Composes a high-energy 60-second venture pitch voiceover script.
-
----
-
-## 🎬 Cinematic Pitch Deck Features
-
-The generated pitch deck ([`artifacts/decks/<run_id>/index.html`](file:///c:/Users/Aarav%20Nautiyal/Desktop/daytona/artifacts/decks/)) includes:
-- **3D Perspective Transitions**: Smooth depth rotation on every slide.
-- **Particle System**: Ambient animated background canvas.
-- **Psychological Persuasion**: Loss Aversion, Curiosity Gap, Anchoring, Demonstration Bias, and Urgency.
-- **Keyboard Shortcuts**:
-  - `←` / `→` or `Space` — Next / Previous slide
-  - `F` — Fullscreen presentation mode
-  - `N` — Open Speaker Notes & psychological talking points drawer
-- **Live Scannable QR Code**: Scan with your smartphone camera to load the running Daytona MVP!
-
----
-
-## 🧪 Running Tests
-
-We test everything! Run all 36 unit, integration, and bug tests with one command:
+### 3. (Optional) Start Neo4j locally
 
 ```bash
-python -m pytest tests/ -v
+docker-compose up -d neo4j
 ```
 
-All 36 tests pass 100% cleanly across:
-- ✅ Full end-to-end pipeline execution
-- ✅ All 5 industry categories (`productivity`, `fintech`, `social`, `health`, `devtools`)
-- ✅ MVP codegen safety, XSS injection resistance, and JSX string sanitization
-- ✅ Pitch deck rendering, edge cases, and missing palette handling
-- ✅ Flexible market recon fixtures with seed reproducibility & randomization
-- ✅ Narration rhetoric, timing markers, and spoken pacing validation
-- ✅ REST API endpoints & 404 error handling
-- ✅ Daytona sandbox file read/write & command execution
-- ✅ Neo4j in-memory knowledge graph
-- ✅ JSON cleaners & LLM fallback engines
+If you skip this, the graph stage runs against an in-memory fallback — fine for a dry run, but you'll want real Neo4j for the live demo so the graph visualization actually has something to show.
+
+### 4. Seed the baseline knowledge graph
+
+```bash
+python -m orchestrator.seed_graph
+```
+
+This populates the graph with a baseline set of known competitors/features so early runs land in an already-connected graph instead of starting from nothing.
+
+### 5. Run it
+
+**Backend:**
+```bash
+uvicorn orchestrator.main:app --reload --port 8000
+```
+
+**Frontend dashboard:**
+```bash
+cd frontend && npm run dev
+```
+
+**Or from the CLI, no dashboard needed:**
+```bash
+python -m cli.founder0 run "an app that predicts the stock market"
+python -m cli.founder0 list
+python -m cli.founder0 status <run_id>
+python -m cli.founder0 replay <run_id>
+```
+
+The CLI streams every stage's live log output to your terminal and prints the final preview URL and generated report path on completion.
 
 ---
 
-## 🔑 Zero-Keys Mode vs. Live Cloud Mode
-
-FOUNDER-0 works **100% out of the box** with `MOCK_MODE=true` (zero API keys required, using rich built-in fixture datasets).
-
-When you are ready to connect live cloud services, simply fill in [.env](file:///c:/Users/Aarav%20Nautiyal/Desktop/daytona/.env):
-
-| Environment Variable | What it's for | Required? |
-|---|---|---|
-| `MOCK_MODE=false` | Switch from local simulation to live APIs | Optional (defaults to `true`) |
-| `DAYTONA_API_KEY` | Daytona cloud sandbox execution | Optional |
-| `NOSANA_API_KEY` | Decentralized GPU LLM inference | Optional |
-| `OXYLABS_USERNAME` & `PASSWORD` | Live Google Search & Web Scraping | Optional |
-| `NEO4J_URI`, `USER`, `PASSWORD` | Live Neo4j Graph Database | Optional |
-
----
-
-## 📁 Repository Structure
+## Repo structure
 
 ```
-daytona/
-├── cli/
-│   └── founder0.py                 # Rich terminal CLI with real-time log streaming
-├── orchestrator/
-│   ├── clients/                    # Client wrappers (Daytona, Nosana, Oxylabs, Neo4j)
-│   ├── stages/                     # All 15 autonomous pipeline stage implementations
-│   ├── database.py                 # Async SQLite / PostgreSQL session manager
-│   ├── models.py                   # Pydantic schemas & SQLAlchemy ORM models
-│   ├── state_machine.py            # Pipeline coordinator & WebSocket event broadcaster
-│   └── main.py                     # FastAPI REST API & WebSocket server
-├── frontend/
-│   ├── src/
-│   │   ├── components/             # RunStepper, KnowledgeGraph, LiveMVPPreview, PitchDeck
-│   │   ├── App.tsx                 # Main interactive dashboard
-│   │   └── index.css               # Tailwind & glassmorphism theme styling
-├── fixtures/market_recon/          # 5 deep industry dataset fixtures
-├── templates/nextjs-sqlite-starter # Production Next.js 14 template for sandboxes
-├── tests/                          # 19 unit & integration tests
-└── README.md                       # Documentation
+orchestrator/
+├── main.py                # FastAPI app — REST + WebSocket API
+├── state_machine.py        # The 13-stage pipeline orchestration
+├── models.py                # Typed I/O for every stage
+├── stages/                  # One file per pipeline stage
+├── clients/
+│   ├── web_search_client.py # Best-effort live search + curated fixture fallback
+│   ├── daytona_client.py    # Real Daytona SDK integration
+│   ├── nosana_client.py     # Real Nosana LLM integration, with fallback provider
+│   ├── neo4j_client.py
+│   └── fallback_llm_client.py
+└── seed_graph.py
+templates/
+└── vanilla-static-starter/  # The zero-build HTML/CSS/JS MVP template
+fixtures/market_recon/       # Offline category fixtures used in MOCK_MODE
+frontend/                    # React dashboard — live pipeline + graph view
+cli/founder0.py               # Terminal interface
 ```
 
 ---
 
-## 📄 License
+## Honesty note on MOCK_MODE
 
-MIT License. Built with ❤️ by the FOUNDER-0 team.
+`MOCK_MODE=true` is not a lesser demo path bolted on as an afterthought — it's how this project could be built and iterated on without burning API quota on every test, and it's the reason the pipeline can be verified end-to-end offline before ever touching a live key. Every client (`web_search_client`, `nosana_client`, `daytona_client`) makes that switch explicit and logs which mode it's running in — nothing pretends to be live when it isn't.
+
+## Known limitations
+
+- Live web search (used in Market Recon when not relying on curated fixtures) is best-effort against a free, unauthenticated endpoint — it can be rate-limited or blocked, in which case the stage falls back to curated fixture data and says so in the logs.
+- The self-heal loop is bounded (2 retries by default) and degrades to a clean baseline page rather than retrying indefinitely — a working generic MVP beats a stuck pipeline.
+- The MVP template is intentionally minimal (landing page + waitlist signup) so that generation and build verification stay fast and reliable during a live run.
